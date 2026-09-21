@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { scrollToSection } from "@/lib/scroll";
+import { NAV_OFFSET, scrollToSection } from "@/lib/scroll";
 
 /**
  * Tracks which section is in view and provides a `navigate` function that
@@ -8,18 +8,28 @@ import { scrollToSection } from "@/lib/scroll";
  */
 export function useScrollSpy(hrefs: readonly string[]) {
   const [activeHref, setActiveHref] = useState<string>(hrefs[0]);
-  const pendingHrefRef = useRef<string | null>(null);
   const timeoutRef = useRef<number | null>(null);
+  const pendingHrefRef = useRef<string | null>(null);
+  const pendingTimeoutRef = useRef<number | null>(null);
 
   const navigate = useCallback((href: string, delay = 0) => {
     setActiveHref(href);
     pendingHrefRef.current = href;
 
     if (timeoutRef.current !== null) window.clearTimeout(timeoutRef.current);
+    if (pendingTimeoutRef.current !== null) {
+      window.clearTimeout(pendingTimeoutRef.current);
+    }
+
     timeoutRef.current = window.setTimeout(() => {
       scrollToSection(href.slice(1));
       timeoutRef.current = null;
     }, delay);
+
+    pendingTimeoutRef.current = window.setTimeout(() => {
+      pendingHrefRef.current = null;
+      pendingTimeoutRef.current = null;
+    }, delay + 900);
   }, []);
 
   useEffect(() => {
@@ -34,35 +44,77 @@ export function useScrollSpy(hrefs: readonly string[]) {
 
     if (sections.length === 0) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+    let frameId: number | null = null;
+    const updateActiveSection = () => {
+      frameId = null;
+      const marker = NAV_OFFSET + 32;
+      let activeSection = sections[0];
 
-        if (!visible[0]) return;
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= marker) {
+          activeSection = section;
+        } else {
+          break;
+        }
+      }
 
-        const pendingHref = pendingHrefRef.current;
-        const pendingEntry = pendingHref
-          ? visible.find((entry) => `#${entry.target.id}` === pendingHref)
-          : undefined;
+      const atPageBottom =
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight - 2;
+      if (atPageBottom) activeSection = sections[sections.length - 1];
 
-        if (pendingHref && !pendingEntry) return;
+      const pendingHref = pendingHrefRef.current;
+      if (pendingHref) {
+        const pendingSection = sections.find(
+          (section) => `#${section.id}` === pendingHref,
+        );
+        const targetReached =
+          pendingHref === "#top"
+            ? window.scrollY <= 1
+            : pendingSection &&
+              (Math.abs(
+                pendingSection.getBoundingClientRect().top - NAV_OFFSET,
+              ) <= 32 ||
+                (atPageBottom && activeSection === pendingSection));
 
+        if (!targetReached) return;
         pendingHrefRef.current = null;
-        setActiveHref(`#${(pendingEntry ?? visible[0]).target.id}`);
-      },
-      { rootMargin: "-35% 0px -55% 0px", threshold: 0.2 },
-    );
+      }
 
-    sections.forEach((section) => observer.observe(section));
+      setActiveHref(`#${activeSection.id}`);
+    };
+
+    const onScroll = () => {
+      if (frameId === null) {
+        frameId = window.requestAnimationFrame(updateActiveSection);
+      }
+    };
+
+    const onSectionNavigate = (event: Event) => {
+      const href = (event as CustomEvent<string>).detail;
+      if (typeof href === "string") navigate(href);
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    window.addEventListener("portfolio:section-navigate", onSectionNavigate);
 
     return () => {
-      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      window.removeEventListener(
+        "portfolio:section-navigate",
+        onSectionNavigate,
+      );
+      if (frameId !== null) window.cancelAnimationFrame(frameId);
       if (timeoutRef.current !== null) window.clearTimeout(timeoutRef.current);
+      if (pendingTimeoutRef.current !== null) {
+        window.clearTimeout(pendingTimeoutRef.current);
+      }
       window.history.scrollRestoration = "auto";
     };
-  }, [hrefs]);
+  }, [hrefs, navigate]);
 
   return { activeHref, navigate };
 }

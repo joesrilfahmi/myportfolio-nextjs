@@ -3,7 +3,10 @@ import type { MouseEvent } from "react";
 /** Height reserved for the fixed navbar when scrolling to a section. */
 export const NAV_OFFSET = 96;
 
-export function scrollToSection(id: string, behavior: ScrollBehavior = "smooth") {
+export function scrollToSection(
+  id: string,
+  behavior: ScrollBehavior = "smooth",
+) {
   const target = document.getElementById(id);
   if (!target) return;
 
@@ -17,7 +20,9 @@ export function sectionLink(hash: `#${string}`) {
     href: hash,
     onClick: (event: MouseEvent<HTMLElement>) => {
       event.preventDefault();
-      scrollToSection(hash.slice(1));
+      window.dispatchEvent(
+        new CustomEvent("portfolio:section-navigate", { detail: hash }),
+      );
     },
   };
 }
