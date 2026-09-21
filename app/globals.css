@@ -1,0 +1,333 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------
+   Registered custom properties. Registering them lets the browser
+   animate them, which is what powers the "extrude" reveal and the
+   hover lift on neumorphic surfaces.
+   ------------------------------------------------------------------ */
+
+/* Elevation multiplier for shadows. 0 = flat on the surface, 1 = fully
+   raised. It inherits, so a whole group can rise out of the surface. */
+@property --elev {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+/* Extra shadow distance added while an element is hovered. */
+@property --lift {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+/* ------------------------------------------------------------------
+   Theme tokens. Colors are RGB channels so Tailwind can apply alpha.
+   Neumorphism needs surface === background, so both share one value.
+   ------------------------------------------------------------------ */
+
+:root {
+  color-scheme: light;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Cool slate base so the orange accent reads as a clear complement */
+  --background: 228 232 238;
+  --surface: 228 232 238;
+  --foreground: 28 34 48;
+  --muted: 86 96 114;
+
+  /* Orange. `accent` is the fill; `accent-ink` is the darker text-safe
+     variant (5:1 on the light surface). */
+  --accent: 250, 65, 54;
+  --accent-light: 255 139 69;
+  --accent-strong: 220 88 12;
+  --accent-ink: 172 58 7;
+  --on-accent: 31 20 8;
+  --danger: 180 35 24;
+
+  --shadow-dark: rgb(167 177 191 / 0.88);
+  --shadow-light: rgb(255 255 255 / 0.92);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: 35 39 47;
+  --surface: 35 39 47;
+  --foreground: 236 239 245;
+  --muted: 163 172 187;
+
+  --accent: 255 138 61;
+  --accent-light: 255 168 100;
+  --accent-strong: 245 116 34;
+  --accent-ink: 255 169 104;
+  --on-accent: 26 17 9;
+  --danger: 255 128 118;
+
+  --shadow-dark: rgb(9 11 16 / 0.78);
+  --shadow-light: rgb(75 83 98 / 0.58);
+}
+
+/* ------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------ */
+
+@layer base {
+  * {
+    border-color: rgb(var(--foreground) / 0.1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: rgb(var(--accent));
+    color: rgb(var(--on-accent));
+  }
+
+  /* Visible keyboard focus everywhere. Uses the text-safe orange so it
+     keeps 3:1 contrast against the surface in both themes. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent-ink));
+    outline-offset: 3px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgb(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--shadow-dark);
+    border-radius: 999px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Neumorphic surface
+
+   Every surface owns two stacked shadow layers: a raised one (::before)
+   and an inset one (::after). States are expressed by cross-fading
+   them, so "raised -> pressed" morphs smoothly, something a plain
+   box-shadow transition cannot do between outer and inset shadows.
+
+   Modifiers
+     depth   .neu-sm | .neu-md | .neu-lg
+     start   .neu-well          starts inset (a recessed well)
+     hover   .neu-lift          raised surfaces float up
+             .neu-pop           wells rise to raised
+     active  .neu-press         any surface sinks in when pressed
+     .neu-over                  draws the inset shadow above the content
+   ------------------------------------------------------------------ */
+
+@layer components {
+  .neu {
+    --d: 8px;
+    --b: 16px;
+    --raised: 1;
+    --inset: 0;
+
+    position: relative;
+    isolation: isolate;
+    background-color: rgb(var(--surface));
+    border: 1px solid rgb(var(--shadow-light) / 0.28);
+    transition:
+      transform 0.45s var(--ease),
+      color 0.3s var(--ease),
+      --lift 0.45s var(--ease);
+  }
+
+  .neu::before,
+  .neu::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    transition: opacity 0.35s var(--ease);
+  }
+
+  /* Raised layer */
+  .neu::before {
+    opacity: var(--raised);
+    box-shadow:
+      calc((var(--d) + var(--lift)) * var(--elev))
+        calc((var(--d) + var(--lift)) * var(--elev))
+        calc((var(--b) + var(--lift) * 2) * var(--elev)) var(--shadow-dark),
+      calc((var(--d) + var(--lift)) * var(--elev) * -1)
+        calc((var(--d) + var(--lift)) * var(--elev) * -1)
+        calc((var(--b) + var(--lift) * 2) * var(--elev)) var(--shadow-light);
+  }
+
+  /* Inset layer, always 65% of the raised depth so wells and raised
+     surfaces of the same size feel like one family. */
+  .neu::after {
+    opacity: var(--inset);
+    box-shadow:
+      inset calc(var(--d) * 0.65 * var(--elev))
+        calc(var(--d) * 0.65 * var(--elev)) calc(var(--b) * 0.65 * var(--elev))
+        var(--shadow-dark),
+      inset calc(var(--d) * -0.65 * var(--elev))
+        calc(var(--d) * -0.65 * var(--elev)) calc(var(--b) * 0.65 * var(--elev))
+        var(--shadow-light);
+  }
+
+  .neu-sm {
+    --d: 5px;
+    --b: 10px;
+  }
+  .neu-md {
+    --d: 8px;
+    --b: 16px;
+  }
+  .neu-lg {
+    --d: 12px;
+    --b: 24px;
+  }
+
+  .neu-well {
+    --raised: 0;
+    --inset: 1;
+  }
+
+  .neu-over::after {
+    z-index: 1;
+  }
+
+  @media (hover: hover) {
+    .neu-lift:hover {
+      transform: translateY(-3px);
+      --lift: 3px;
+    }
+    .neu-pop:hover {
+      --raised: 1;
+      --inset: 0;
+      transform: translateY(-2px);
+      --lift: 2px;
+    }
+  }
+
+  .neu-press:active {
+    --raised: 0;
+    --inset: 1;
+    --lift: 0px;
+    transform: translateY(0) scale(0.985);
+  }
+
+  /* Primary action: a solid orange key with tactile neumorphic depth. */
+  .btn-primary {
+    color: rgb(var(--on-accent));
+    background-color: rgb(var(--accent));
+    border: 1px solid rgb(var(--accent-light) / 0.7);
+    box-shadow:
+      6px 6px 12px rgb(var(--accent-strong) / 0.42),
+      -6px -6px 12px rgb(var(--accent-light) / 0.34),
+      inset 1px 1px 2px rgb(255 255 255 / 0.28),
+      inset -2px -2px 4px rgb(0 0 0 / 0.14);
+    transition:
+      transform 0.45s var(--ease),
+      box-shadow 0.45s var(--ease);
+  }
+  @media (hover: hover) {
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow:
+        8px 8px 16px rgb(var(--accent-strong) / 0.46),
+        -8px -8px 16px rgb(var(--accent-light) / 0.38),
+        inset 1px 1px 2px rgb(255 255 255 / 0.32),
+        inset -2px -2px 4px rgb(0 0 0 / 0.14);
+    }
+  }
+  .btn-primary:active:not(:disabled) {
+    transform: translateY(0) scale(0.985);
+    box-shadow:
+      inset 4px 4px 8px rgb(0 0 0 / 0.24),
+      inset -3px -3px 7px rgb(255 255 255 / 0.2);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Motion
+   ------------------------------------------------------------------ */
+
+/* "Extrude" reveal: a surface rises out of the base plane (its shadows
+   grow from --elev 0 to 1) instead of just sliding in. "Rise" is the
+   quieter variant for plain text. */
+[data-reveal] {
+  opacity: 0;
+  transition:
+    opacity 0.7s var(--ease) var(--reveal-delay, 0s),
+    transform 0.8s var(--ease) var(--reveal-delay, 0s),
+    --elev 0.9s var(--ease) var(--reveal-delay, 0s);
+}
+[data-reveal="extrude"] {
+  --elev: 0;
+  transform: scale(0.97);
+}
+[data-reveal="rise"] {
+  transform: translateY(14px);
+}
+[data-reveal][data-inview="true"] {
+  --elev: 1;
+  opacity: 1;
+  transform: none;
+}
+
+/* Hero portrait ring draws itself once on load. */
+@keyframes ring-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0.36;
+  }
+}
+.ring-arc {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0.36;
+  animation: ring-draw 1.6s var(--ease) 0.6s both;
+}
+
+/* Briefly soften theme colors across every element. Expensive shadow changes
+  stay instant so the theme switch remains light. */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition-property:
+    background-color, color, border-color, fill, stroke, outline-color,
+    text-decoration-color, caret-color, accent-color !important;
+  transition-duration: 0.14s !important;
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1) !important;
+  transition-delay: 0s !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}
