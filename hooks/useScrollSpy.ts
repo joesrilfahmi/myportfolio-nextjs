@@ -52,7 +52,7 @@ export function useScrollSpy(hrefs: readonly string[]) {
         pendingHrefRef.current = null;
         setActiveHref(`#${(pendingEntry ?? visible[0]).target.id}`);
       },
-      { rootMargin: "-35% 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
+      { rootMargin: "-35% 0px -55% 0px", threshold: 0.2 },
     );
 
     sections.forEach((section) => observer.observe(section));

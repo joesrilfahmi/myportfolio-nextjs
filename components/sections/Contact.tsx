@@ -1,7 +1,8 @@
 "use client";
 
 import { Mail, Send, LoaderCircle } from "lucide-react";
-import { contactContent, personalInfo } from "@/lib/data";
+import { contactContent } from "@/lib/data/contact";
+import { personalInfo } from "@/lib/data/shared";
 import { neu } from "@/lib/neu";
 import { cn } from "@/lib/cn";
 import { useContactForm } from "@/hooks/useContactForm";

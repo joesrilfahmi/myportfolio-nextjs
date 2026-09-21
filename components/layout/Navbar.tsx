@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect, useState, type MouseEvent } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { navLinks, personalInfo } from "@/lib/data";
-import { EASE } from "@/lib/motion";
+import { navLinks, personalInfo } from "@/lib/data/shared";
 import { cn } from "@/lib/cn";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import { Card } from "../ui/Card";
@@ -137,28 +135,21 @@ export function Navbar() {
           </div>
         </Card>
 
-        <AnimatePresence initial={false}>
-          {isOpen && (
-            <motion.nav
-              id="mobile-menu"
-              aria-label="Mobile"
-              initial={{ opacity: 0, y: -10, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.98 }}
-              transition={{ duration: 0.25, ease: EASE }}
-              style={{ transformOrigin: "top center" }}
-              className="md:hidden"
-            >
-              <Card radius="3xl" className="mt-3 p-3">
-                <NavLinks
-                  variant="mobile"
-                  activeHref={activeHref}
-                  onNavigate={handleNavigate(true)}
-                />
-              </Card>
-            </motion.nav>
-          )}
-        </AnimatePresence>
+        {isOpen && (
+          <nav
+            id="mobile-menu"
+            aria-label="Mobile"
+            className="animate-menu-in md:hidden"
+          >
+            <Card radius="3xl" className="mt-3 p-3">
+              <NavLinks
+                variant="mobile"
+                activeHref={activeHref}
+                onNavigate={handleNavigate(true)}
+              />
+            </Card>
+          </nav>
+        )}
       </div>
     </header>
   );

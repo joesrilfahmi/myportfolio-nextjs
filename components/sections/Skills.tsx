@@ -1,4 +1,4 @@
-import { skillGroups, skillsContent } from "@/lib/data";
+import { skillGroups, skillsContent } from "@/lib/data/skills";
 import { cn } from "@/lib/cn";
 import { SkillGroup } from "../SkillGroup";
 import { Reveal } from "../ui/Reveal";

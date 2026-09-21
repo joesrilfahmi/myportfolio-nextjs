@@ -1,4 +1,4 @@
-import { timeline } from "@/lib/data";
+import { timeline } from "@/lib/data/journey";
 import { TimelineItem } from "../TimelineItem";
 import { Section } from "../ui/Section";
 import { SectionHeading } from "../ui/SectionHeading";

@@ -1,4 +1,4 @@
-import type { TimelineEntry } from "@/lib/data";
+import type { TimelineEntry } from "@/lib/data/journey";
 import { cn } from "@/lib/cn";
 import { Card } from "./ui/Card";
 import { Reveal } from "./ui/Reveal";

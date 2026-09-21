@@ -299,24 +299,55 @@
     stroke-dashoffset: 0.36;
   }
 }
+
+@keyframes theme-icon-in {
+  from {
+    opacity: 0;
+    transform: rotate(var(--theme-turn)) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 32px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.animate-theme-icon {
+  animation: theme-icon-in 0.25s var(--ease) both;
+}
+.animate-menu-in {
+  animation: menu-in 0.25s var(--ease) both;
+  transform-origin: top center;
+}
+.animate-toast-in {
+  animation: toast-in 0.3s var(--ease) both;
+}
+
 .ring-arc {
   stroke-dasharray: 1;
   stroke-dashoffset: 0.36;
   animation: ring-draw 1.6s var(--ease) 0.6s both;
-}
-
-/* Briefly soften theme colors across every element. Expensive shadow changes
-  stay instant so the theme switch remains light. */
-html.theme-transition,
-html.theme-transition *,
-html.theme-transition *::before,
-html.theme-transition *::after {
-  transition-property:
-    background-color, color, border-color, fill, stroke, outline-color,
-    text-decoration-color, caret-color, accent-color !important;
-  transition-duration: 0.14s !important;
-  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1) !important;
-  transition-delay: 0s !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

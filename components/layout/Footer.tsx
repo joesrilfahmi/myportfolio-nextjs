@@ -1,4 +1,4 @@
-import { personalInfo } from "@/lib/data";
+import { personalInfo } from "@/lib/data/shared";
 import { SocialLinks } from "../SocialLinks";
 import { Card } from "../ui/Card";
 import { Reveal } from "../ui/Reveal";

@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { ArrowUpRight, FolderSearch, Github } from "lucide-react";
-import { projects, projectsContent, socialLinks } from "@/lib/data";
+import { projects, projectsContent } from "@/lib/data/projects";
+import { socialLinks } from "@/lib/data/shared";
 import { scrollToSection } from "@/lib/scroll";
 import { ProjectCard } from "../ProjectCard";
 import { Button } from "../ui/Button";
@@ -16,7 +17,7 @@ import { SectionHeading } from "../ui/SectionHeading";
 const PAGE_SIZE = 6;
 const githubLink = socialLinks.find((link) => link.icon === "github");
 
-/** Shown until the first project is added to `lib/data.ts`. */
+/** Shown until the first project is added to `lib/data/projects.ts`. */
 function EmptyState() {
   return (
     <Reveal>

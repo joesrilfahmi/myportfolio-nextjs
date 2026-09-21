@@ -17,8 +17,6 @@ interface ThemeContextValue {
 }
 
 const THEME_STORAGE_KEY = "portfolio-theme";
-/** How long the cross-fade class stays on <html> after a toggle (ms). */
-const THEME_TRANSITION_MS = 140;
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
@@ -48,13 +46,7 @@ export function ThemeInitScript() {
 function applyTheme(theme: Theme) {
   const root = document.documentElement;
 
-  // Briefly enable the cross-fade so colors and shadows re-light smoothly.
-  root.classList.add("theme-transition");
   root.classList.toggle("dark", theme === "dark");
-  window.setTimeout(
-    () => root.classList.remove("theme-transition"),
-    THEME_TRANSITION_MS,
-  );
 
   try {
     localStorage.setItem(THEME_STORAGE_KEY, theme);

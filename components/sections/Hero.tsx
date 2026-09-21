@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Cursor, useTypewriter } from "react-simple-typewriter";
-import { heroContent, personalInfo } from "@/lib/data";
+import { heroContent } from "@/lib/data/hero";
+import { personalInfo } from "@/lib/data/shared";
 import { sectionLink } from "@/lib/scroll";
 import { SocialLinks } from "../SocialLinks";
 import { Button } from "../ui/Button";
@@ -18,8 +19,8 @@ function RoleTypewriter() {
   const [text] = useTypewriter({
     words: [...personalInfo.role],
     loop: true,
-    typeSpeed: 70,
-    deleteSpeed: 40,
+    typeSpeed: 65,
+    deleteSpeed: 35,
     delaySpeed: 1800,
   });
 

@@ -1,5 +1,5 @@
 import { Github, Linkedin, Mail } from "lucide-react";
-import { socialLinks } from "@/lib/data";
+import { socialLinks } from "@/lib/data/shared";
 import { cn } from "@/lib/cn";
 import { IconButton } from "./ui/Button";
 

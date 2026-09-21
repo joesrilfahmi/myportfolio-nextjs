@@ -1,5 +1,5 @@
 import { Code2, Compass, Layers } from "lucide-react";
-import { aboutContent } from "@/lib/data";
+import { aboutContent } from "@/lib/data/about";
 import { Card } from "../ui/Card";
 import { IconBadge } from "../ui/IconBadge";
 import { Reveal } from "../ui/Reveal";
@@ -20,7 +20,11 @@ export function About() {
           <SectionHeading title={aboutContent.title} />
 
           <div className="grid gap-12 md:grid-cols-5 md:gap-16">
-            <Reveal variant="rise" delay={0.05} className="md:col-span-3 md:self-center">
+            <Reveal
+              variant="rise"
+              delay={0.05}
+              className="md:col-span-3 md:self-center"
+            >
               <p className="text-lg leading-relaxed text-muted">
                 {aboutContent.paragraph}
               </p>
@@ -36,7 +40,9 @@ export function About() {
                     >
                       <IconBadge icon={icons[icon]} />
                       <div>
-                        <p className="text-xs font-medium text-muted">{label}</p>
+                        <p className="text-xs font-medium text-muted">
+                          {label}
+                        </p>
                         <p className="mt-1 font-display text-base font-semibold text-foreground">
                           {value}
                         </p>

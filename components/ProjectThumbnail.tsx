@@ -1,8 +1,17 @@
+import Image from "next/image";
 import { cn } from "@/lib/cn";
 import { Card } from "./ui/Card";
 
 type Shape =
-  | { t: "rect"; x: number; y: number; w: number; h: number; r: number; c: string }
+  | {
+      t: "rect";
+      x: number;
+      y: number;
+      w: number;
+      h: number;
+      r: number;
+      c: string;
+    }
   | { t: "circle"; x: number; y: number; r: number; c: string };
 
 /** Class names are literal so Tailwind can see them. */
@@ -34,42 +43,57 @@ const illustrations: Record<"mobile" | "web", Shape[]> = {
   ],
 };
 
-export function ProjectThumbnail({ kind }: { kind: "mobile" | "web" }) {
+interface ProjectThumbnailProps {
+  kind: "mobile" | "web";
+  thumbnail?: string;
+}
+
+export function ProjectThumbnail({ kind, thumbnail }: ProjectThumbnailProps) {
   return (
     <Card
       tone="inset"
       radius="xl"
-      className="flex h-40 items-center justify-center sm:h-44"
+      className="relative flex h-48 items-center justify-center overflow-hidden sm:h-56"
     >
-      <svg
-        viewBox="0 0 220 160"
-        fill="none"
-        aria-hidden="true"
-        className="h-full w-full"
-      >
-        {illustrations[kind].map((shape, index) =>
-          shape.t === "rect" ? (
-            <rect
-              key={index}
-              x={shape.x}
-              y={shape.y}
-              width={shape.w}
-              height={shape.h}
-              rx={shape.r}
-              strokeWidth={shape.c === frame ? 1.5 : undefined}
-              className={cn(shape.c)}
-            />
-          ) : (
-            <circle
-              key={index}
-              cx={shape.x}
-              cy={shape.y}
-              r={shape.r}
-              className={cn(shape.c)}
-            />
-          ),
-        )}
-      </svg>
+      {thumbnail ? (
+        <Image
+          src={thumbnail}
+          alt=""
+          fill
+          sizes="(min-width: 768px) 400px, 100vw"
+          className="object-cover"
+        />
+      ) : (
+        <svg
+          viewBox="0 0 220 160"
+          fill="none"
+          aria-hidden="true"
+          className="h-full w-full"
+        >
+          {illustrations[kind].map((shape, index) =>
+            shape.t === "rect" ? (
+              <rect
+                key={index}
+                x={shape.x}
+                y={shape.y}
+                width={shape.w}
+                height={shape.h}
+                rx={shape.r}
+                strokeWidth={shape.c === frame ? 1.5 : undefined}
+                className={cn(shape.c)}
+              />
+            ) : (
+              <circle
+                key={index}
+                cx={shape.x}
+                cy={shape.y}
+                r={shape.r}
+                className={cn(shape.c)}
+              />
+            ),
+          )}
+        </svg>
+      )}
     </Card>
   );
 }

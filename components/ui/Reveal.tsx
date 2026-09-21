@@ -1,7 +1,12 @@
 "use client";
 
-import { useRef, type CSSProperties, type ReactNode } from "react";
-import { useInView } from "framer-motion";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 
 interface RevealProps {
   children: ReactNode;
@@ -27,7 +32,24 @@ export function Reveal({
   className,
 }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.2 });
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setInView(true);
+        observer.disconnect();
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div
