@@ -3,11 +3,12 @@ import type {
   ReactNode,
   TextareaHTMLAttributes,
 } from "react";
+import { cn } from "@/lib/cn";
 import { Card } from "./Card";
 
 /** Shared look for the control inside the recessed well. */
 const controlClass =
-  "w-full rounded-2xl bg-transparent px-4 py-3 text-sm text-foreground placeholder:text-muted/70 focus:outline-none";
+  "w-full rounded-3xl bg-transparent px-4 py-3 text-base text-foreground placeholder:text-muted/70 focus:outline-none";
 
 interface FieldShellProps {
   id: string;
@@ -16,9 +17,9 @@ interface FieldShellProps {
 }
 
 /**
- * Label + recessed well. The well shows an orange outline while its
- * control is focused, so focus stays visible even though the native
- * outline is removed from the control itself.
+ * Label + recessed well. The well shows a blue outline while its control is
+ * focused, so focus stays visible even though the native outline is removed
+ * from the control itself.
  */
 function FieldShell({ id, label, children }: FieldShellProps) {
   return (
@@ -31,9 +32,8 @@ function FieldShell({ id, label, children }: FieldShellProps) {
       </label>
       <Card
         tone="inset"
-        depth="md"
-        radius="xl"
-        className="focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent-ink"
+        radius="3xl"
+        className="focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary-ink"
       >
         {children}
       </Card>
@@ -41,7 +41,10 @@ function FieldShell({ id, label, children }: FieldShellProps) {
   );
 }
 
-type InputFieldProps = { id: string; label: string } & InputHTMLAttributes<HTMLInputElement>;
+type InputFieldProps = {
+  id: string;
+  label: string;
+} & InputHTMLAttributes<HTMLInputElement>;
 
 export function InputField({ id, label, ...props }: InputFieldProps) {
   return (
@@ -51,7 +54,10 @@ export function InputField({ id, label, ...props }: InputFieldProps) {
   );
 }
 
-type TextAreaFieldProps = { id: string; label: string } & TextareaHTMLAttributes<HTMLTextAreaElement>;
+type TextAreaFieldProps = {
+  id: string;
+  label: string;
+} & TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 export function TextAreaField({ id, label, ...props }: TextAreaFieldProps) {
   return (
@@ -59,7 +65,7 @@ export function TextAreaField({ id, label, ...props }: TextAreaFieldProps) {
       <textarea
         id={id}
         name={id}
-        className={`${controlClass} resize-none`}
+        className={cn(controlClass, "resize-none")}
         {...props}
       />
     </FieldShell>

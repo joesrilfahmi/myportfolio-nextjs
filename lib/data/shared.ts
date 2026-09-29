@@ -1,3 +1,7 @@
+import { Mail } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
+import type { IconType } from "@/types/ui";
+
 export const personalInfo = {
   name: "Yusril Fahmi",
   username: "joesrilfahmi",
@@ -10,24 +14,33 @@ export const navLinks = [
   { label: "About", href: "#about" },
   { label: "Skills", href: "#skills" },
   { label: "Projects", href: "#projects" },
-  { label: "Journey", href: "#journey" },
+  // { label: "Journey", href: "#journey" },
   { label: "Contact", href: "#contact" },
 ] as const;
 
-export const socialLinks = [
+export interface SocialLink {
+  label: string;
+  href: string;
+  icon: IconType;
+}
+
+export const socialLinks: readonly SocialLink[] = [
   {
     label: "GitHub",
     href: "https://github.com/joesrilfahmi",
-    icon: "github",
+    icon: GithubIcon,
   },
   {
     label: "LinkedIn",
     href: "https://linkedin.com/in/joesrilfahmi",
-    icon: "linkedin",
+    icon: LinkedinIcon,
   },
   {
     label: "Email",
     href: `mailto:${personalInfo.email}`,
-    icon: "mail",
+    icon: Mail,
   },
-] as const;
+];
+
+/** GitHub profile link, used as the fallback call to action. */
+export const githubLink = socialLinks[0];

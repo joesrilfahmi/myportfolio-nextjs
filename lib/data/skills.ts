@@ -1,3 +1,6 @@
+import { Database, Monitor, Server, Smartphone } from "lucide-react";
+import type { IconType } from "@/types/ui";
+
 export const skillsContent = {
   title: "Skills",
   description:
@@ -10,6 +13,7 @@ export interface SkillGroupData {
   id: SkillCategory;
   title: string;
   note: string;
+  icon: IconType;
   skills: string[];
   wide?: boolean;
 }
@@ -17,6 +21,7 @@ export interface SkillGroupData {
 export const skillGroups: SkillGroupData[] = [
   {
     id: "frontend",
+    icon: Monitor,
     title: "Frontend",
     note: "Interfaces that stay maintainable as they grow.",
     wide: true,
@@ -34,18 +39,21 @@ export const skillGroups: SkillGroupData[] = [
   },
   {
     id: "backend",
+    icon: Server,
     title: "Backend",
     note: "APIs and services that hold up under real usage.",
     skills: ["PHP", "Node.js", "Laravel"],
   },
   {
     id: "mobile",
+    icon: Smartphone,
     title: "Mobile",
     note: "Cross-platform apps from a single codebase.",
     skills: ["Dart", "Flutter"],
   },
   {
     id: "database",
+    icon: Database,
     title: "Database",
     note: "Schemas designed around how the data is actually used.",
     skills: ["MySQL", "PostgreSQL"],

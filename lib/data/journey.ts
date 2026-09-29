@@ -1,3 +1,7 @@
+export const journeyContent = {
+  title: "Journey",
+} as const;
+
 export interface TimelineEntry {
   label: string;
   title: string;

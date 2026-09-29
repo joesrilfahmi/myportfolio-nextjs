@@ -1,9 +1,4 @@
-import {
-  useCallback,
-  useEffect,
-  useState,
-  type ChangeEvent,
-} from "react";
+import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import emailjs from "@emailjs/browser";
 
 export type ContactStatus = "idle" | "sending" | "success" | "error";
@@ -11,11 +6,12 @@ export type ContactStatus = "idle" | "sending" | "success" | "error";
 const initialValues = { name: "", email: "", message: "" };
 
 interface EmailJsConfig {
-  serviceId?: string;
-  templateId?: string;
-  publicKey?: string;
-  message?: string;
+  serviceId: string;
+  templateId: string;
+  publicKey: string;
 }
+
+type ApiResult<T = object> = Partial<T> & { message?: string };
 
 /**
  * Owns the contact form's state and submission flow:
@@ -67,22 +63,26 @@ export function useContactForm() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name, email, message, website, startedAt }),
         });
-        const result = (await response.json()) as { message?: string };
+        const result = (await response.json()) as ApiResult;
 
         if (!response.ok) {
           throw new Error(result.message ?? "Pesan gagal dikirim.");
         }
 
         const configResponse = await fetch("/api/contact/config");
-        const config = (await configResponse.json()) as EmailJsConfig;
+        const config =
+          (await configResponse.json()) as ApiResult<EmailJsConfig>;
+        const { serviceId, templateId, publicKey } = config;
 
-        if (!configResponse.ok) {
-          throw new Error(config.message ?? "Konfigurasi EmailJS belum lengkap.");
+        if (!configResponse.ok || !serviceId || !templateId || !publicKey) {
+          throw new Error(
+            config.message ?? "Konfigurasi EmailJS belum lengkap.",
+          );
         }
 
         await emailjs.send(
-          config.serviceId!,
-          config.templateId!,
+          serviceId,
+          templateId,
           {
             name,
             email,
@@ -97,7 +97,7 @@ export function useContactForm() {
             user_name: name,
             user_email: email,
           },
-          config.publicKey!,
+          publicKey,
         );
 
         setStatus("success");

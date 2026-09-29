@@ -1,12 +1,12 @@
-import { timeline } from "@/lib/data/journey";
-import { TimelineItem } from "../TimelineItem";
+import { journeyContent, timeline } from "@/lib/data/journey";
+import { TimelineItem } from "../shared/TimelineItem";
 import { Section } from "../ui/Section";
 import { SectionHeading } from "../ui/SectionHeading";
 
 export function Journey() {
   return (
-    <Section id="journey" width="narrow">
-      <SectionHeading title="Journey" />
+    <Section id="journey" titleId="journey-title">
+      <SectionHeading id="journey-title" title={journeyContent.title} />
 
       <ol>
         {timeline.map((entry, index) => (

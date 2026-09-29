@@ -1,28 +1,28 @@
-import { ArrowUpRight, Github } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/lib/data/projects";
-import { Button, IconButton } from "./ui/Button";
-import { Card } from "./ui/Card";
-import { Chip, ChipList } from "./ui/Chip";
+import { Button, IconButton } from "../ui/Button";
+import { GithubIcon } from "../ui/BrandIcons";
+import { Card } from "../ui/Card";
+import { Chip, ChipList } from "../ui/Chip";
 import { ProjectThumbnail } from "./ProjectThumbnail";
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
     <Card as="article" interactive className="flex h-full flex-col p-6 sm:p-7">
-      <ProjectThumbnail kind={project.kind} thumbnail={project.thumbnail} />
+      <ProjectThumbnail
+        kind={project.kind}
+        thumbnail={project.thumbnail}
+        title={project.title}
+      />
 
       <div className="mt-6 flex items-center justify-between gap-3">
         <Chip>{project.category}</Chip>
-        <Card
-          tone="inset"
-          depth="sm"
-          radius="full"
-          className="px-3 py-1.5 text-xs font-semibold text-foreground"
-        >
+        <Chip>
           <time dateTime={String(project.year)}>{project.year}</time>
-        </Card>
+        </Chip>
       </div>
 
-      <h3 className="mt-4 font-display text-xl font-semibold text-foreground">
+      <h3 className="mt-4 text-xl font-semibold text-foreground">
         {project.title}
       </h3>
 
@@ -48,7 +48,7 @@ export function ProjectCard({ project }: { project: Project }) {
             label={`${project.title} on GitHub`}
             size="sm"
           >
-            <Github size={17} strokeWidth={1.75} />
+            <GithubIcon size={17} strokeWidth={1.75} aria-hidden="true" />
           </IconButton>
         )}
       </div>

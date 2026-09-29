@@ -1,14 +1,16 @@
 import { skillGroups, skillsContent } from "@/lib/data/skills";
 import { cn } from "@/lib/cn";
-import { SkillGroup } from "../SkillGroup";
-import { Reveal } from "../ui/Reveal";
+import { stagger } from "@/lib/motion";
+import { Reveal } from "../motion/Reveal";
+import { SkillGroup } from "../shared/SkillGroup";
 import { Section } from "../ui/Section";
 import { SectionHeading } from "../ui/SectionHeading";
 
 export function Skills() {
   return (
-    <Section id="skills">
+    <Section id="skills" titleId="skills-title">
       <SectionHeading
+        id="skills-title"
         title={skillsContent.title}
         description={skillsContent.description}
       />
@@ -17,7 +19,7 @@ export function Skills() {
         {skillGroups.map((group, index) => (
           <Reveal
             key={group.id}
-            delay={index * 0.08}
+            delay={stagger(index)}
             className={cn("h-full", group.wide && "md:col-span-3")}
           >
             <SkillGroup {...group} />

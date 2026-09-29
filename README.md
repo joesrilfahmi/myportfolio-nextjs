@@ -1,37 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Yusril Fahmi — Portfolio
 
-## Getting Started
+Personal portfolio built with **Next.js (App Router)**, **React 19**, **Tailwind CSS v4** and **Motion**, styled as a soft, blue neumorphic design system with light and dark themes.
 
-First, run the development server:
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
+bun run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Script              | What it does                     |
+| ------------------- | -------------------------------- |
+| `bun run dev`       | Start the dev server             |
+| `bun run build`     | Production build                 |
+| `bun run start`     | Serve the production build       |
+| `bun run lint`      | ESLint (`eslint-config-next`)    |
+| `bun run typecheck` | `tsc --noEmit`                   |
+| `bun run format`    | Prettier (with Tailwind sorting) |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The contact form delivers to Telegram (server-side) and sends an email through EmailJS.
+All are read on the server only:
 
-## Learn More
+```
+VITE_TELEGRAM_BOT_TOKEN=
+VITE_TELEGRAM_CHAT_ID=
+VITE_EMAILJS_SERVICE_ID=
+VITE_EMAILJS_TEMPLATE_ID=
+VITE_EMAILJS_PUBLIC_KEY=
+NEXT_PUBLIC_SITE_URL=https://your-domain.com   # canonical URL for Open Graph
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Project structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+app/                 routes, layout, global CSS (design tokens live here)
+components/
+  ui/                primitives: Card, Button, Chip, Field, Toast…
+  motion/            Reveal, MotionCard
+  layout/            Navbar, Footer
+  sections/          Hero, About, Skills, Projects, Journey, Contact
+  shared/            feature components used by the sections
+hooks/               useScrollSpy, useContactForm, useTypewriter…
+lib/data/            all page content (edit here to change copy)
+lib/motion.ts        motion variants, easing, timings
+providers/           Theme + Motion providers
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Editing content
 
-## Deploy on Vercel
+Everything shown on the page is data in `lib/data/*`: add a project to `projects.ts`,
+a skill group to `skills.ts`, or a timeline entry to `journey.ts`; the UI renders it.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Design system
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# myportfolio-nextjs
+- **Tokens** (`app/globals.css`): `background`, `surface`, `surface-raised`, `surface-inset`,
+  `foreground`, `muted`, `border`, `primary` (+ `-hover`, `-active`, `-soft`, `-muted`, `-ink`), `shadow-light`, `shadow-dark`.
+  Tailwind exposes them as utilities (`bg-surface`, `text-primary-ink`).
+- **Neumorphism**: `Card` (`tone="raised" | "inset"`, `depth`, `radius`, `interactive`),
+  `Button` (`primary | raised | inset`), `IconButton`, `InputField`/`TextAreaField`.
+- **Motion**: variants and timings in `lib/motion.ts`; `<Reveal>` for scroll entrances.
+  `prefers-reduced-motion` is respected.

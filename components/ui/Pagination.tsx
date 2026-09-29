@@ -8,7 +8,12 @@ interface PaginationProps {
   label: string;
 }
 
-export function Pagination({ page, pageCount, onChange, label }: PaginationProps) {
+export function Pagination({
+  page,
+  pageCount,
+  onChange,
+  label,
+}: PaginationProps) {
   if (pageCount <= 1) return null;
 
   const pages = Array.from({ length: pageCount }, (_, index) => index + 1);

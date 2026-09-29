@@ -1,0 +1,113 @@
+"use client";
+
+import { LoaderCircle, Send } from "lucide-react";
+import { useContactForm } from "@/hooks/useContactForm";
+import { neu } from "@/lib/neu";
+import { cn } from "@/lib/cn";
+import { Button } from "../ui/Button";
+import { InputField, TextAreaField } from "../ui/Field";
+import { Toast } from "../ui/Toast";
+
+const textFields = [
+  {
+    id: "name",
+    label: "Name",
+    type: "text",
+    placeholder: "Your name",
+    autoComplete: "name",
+    minLength: 2,
+    maxLength: 100,
+  },
+  {
+    id: "email",
+    label: "Email",
+    type: "email",
+    placeholder: "you@example.com",
+    autoComplete: "email",
+    maxLength: 254,
+  },
+] as const;
+
+export function ContactForm() {
+  const { values, handleChange, submit, status, alertMessage } =
+    useContactForm();
+  const isSending = status === "sending";
+
+  return (
+    <>
+      <form
+        noValidate
+        onSubmit={(event) => {
+          event.preventDefault();
+          void submit(event.currentTarget);
+        }}
+        className={cn(neu(), "rounded-4xl p-6 sm:p-8")}
+      >
+        <div className="flex flex-col gap-5">
+          {/* Honeypot: hidden from people, tempting to bots. */}
+          <div
+            aria-hidden="true"
+            className="absolute -left-[9999px] h-px w-px overflow-hidden"
+          >
+            <label htmlFor="website">Website</label>
+            <input
+              id="website"
+              name="website"
+              tabIndex={-1}
+              autoComplete="new-password"
+              value=""
+              readOnly
+            />
+          </div>
+
+          {textFields.map((field) => (
+            <InputField
+              key={field.id}
+              {...field}
+              required
+              value={values[field.id]}
+              onChange={handleChange}
+            />
+          ))}
+
+          <TextAreaField
+            id="message"
+            label="Message"
+            required
+            minLength={10}
+            maxLength={5000}
+            rows={4}
+            placeholder="What are you looking to build?"
+            value={values.message}
+            onChange={handleChange}
+          />
+
+          <Button
+            type="submit"
+            variant="primary"
+            disabled={isSending}
+            className="mt-2"
+            icon={
+              isSending ? (
+                <LoaderCircle
+                  size={15}
+                  strokeWidth={2}
+                  className="animate-spin"
+                />
+              ) : (
+                <Send size={15} strokeWidth={2} />
+              )
+            }
+          >
+            {isSending ? "Sending..." : "Send Message"}
+          </Button>
+        </div>
+      </form>
+
+      <Toast
+        status={status === "success" || status === "error" ? status : null}
+        message={alertMessage}
+      />
+    </>
+  );
+}

@@ -1,5 +1,5 @@
-import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/cn";
+import type { IconType } from "@/types/ui";
 import { Card } from "./Card";
 
 const sizes = {
@@ -8,13 +8,17 @@ const sizes = {
 } as const;
 
 interface IconBadgeProps {
-  icon: LucideIcon;
+  icon: IconType;
   size?: keyof typeof sizes;
   className?: string;
 }
 
-/** An orange glyph sitting in a small recessed circle. */
-export function IconBadge({ icon: Icon, size = "md", className }: IconBadgeProps) {
+/** A blue glyph sitting in a small recessed circle. */
+export function IconBadge({
+  icon: Icon,
+  size = "md",
+  className,
+}: IconBadgeProps) {
   const { box, icon } = sizes[size];
 
   return (
@@ -23,7 +27,7 @@ export function IconBadge({ icon: Icon, size = "md", className }: IconBadgeProps
       depth="sm"
       radius="full"
       className={cn(
-        "flex shrink-0 items-center justify-center text-accent-ink",
+        "flex shrink-0 items-center justify-center text-primary-ink",
         box,
         className,
       )}

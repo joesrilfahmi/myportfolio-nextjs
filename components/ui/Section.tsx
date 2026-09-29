@@ -1,19 +1,15 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-const widths = {
-  wide: "max-w-6xl",
-  narrow: "max-w-6xl",
-} as const;
-
 const spacings = {
   default: "py-20 md:py-28",
-  hero: "pb-20 pt-36 md:pb-24 md:pt-40",
+  hero: "pt-36 pb-20 md:pt-40 md:pb-24",
 } as const;
 
 interface SectionProps {
   id: string;
-  width?: keyof typeof widths;
+  /** Id of the section's heading, so the landmark has an accessible name. */
+  titleId?: string;
   spacing?: keyof typeof spacings;
   className?: string;
   children: ReactNode;
@@ -22,7 +18,7 @@ interface SectionProps {
 /** Shared page-section wrapper: one width, one rhythm, one scroll offset. */
 export function Section({
   id,
-  width = "wide",
+  titleId,
   spacing = "default",
   className,
   children,
@@ -30,12 +26,8 @@ export function Section({
   return (
     <section
       id={id}
-      className={cn(
-        "mx-auto px-6",
-        widths[width],
-        spacings[spacing],
-        className,
-      )}
+      aria-labelledby={titleId}
+      className={cn("mx-auto max-w-6xl px-6", spacings[spacing], className)}
     >
       {children}
     </section>

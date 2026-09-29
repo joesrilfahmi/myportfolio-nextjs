@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { Card } from "./Card";
 
@@ -6,15 +7,46 @@ const sizes = {
   md: "px-3.5 py-2 text-sm",
 } as const;
 
+type ChipSize = keyof typeof sizes;
+
+/** A single inset pill: a project category, a skill, a "+N" overflow. */
+export function Chip({
+  children,
+  size = "sm",
+  muted = false,
+  className,
+}: {
+  children: ReactNode;
+  size?: ChipSize;
+  muted?: boolean;
+  className?: string;
+}) {
+  return (
+    <Card
+      tone="inset"
+      depth="sm"
+      radius="full"
+      className={cn(
+        "inline-block font-medium",
+        muted ? "text-muted" : "text-foreground",
+        sizes[size],
+        className,
+      )}
+    >
+      {children}
+    </Card>
+  );
+}
+
 interface ChipListProps {
   items: readonly string[];
-  size?: keyof typeof sizes;
+  size?: ChipSize;
   /** Show at most this many chips, then a "+N" chip for the rest. */
   limit?: number;
   className?: string;
 }
 
-/** A wrapped list of inset pills — used for skills and project stacks. */
+/** A wrapped list of chips, used for skills and project stacks. */
 export function ChipList({
   items,
   size = "md",
@@ -26,52 +58,18 @@ export function ChipList({
 
   return (
     <ul className={cn("flex flex-wrap gap-2", className)}>
-      {visible.map((item, index) => (
-        <li key={`${item}-${index}`}>
-          <Card
-            as="div"
-            tone="inset"
-            depth="sm"
-            radius="full"
-            className={cn("font-medium text-foreground", sizes[size])}
-          >
-            {item}
-          </Card>
+      {visible.map((item) => (
+        <li key={item}>
+          <Chip size={size}>{item}</Chip>
         </li>
       ))}
       {hidden > 0 && (
         <li>
-          <Card
-            as="div"
-            tone="inset"
-            depth="sm"
-            radius="full"
-            className={cn("font-medium text-muted", sizes[size])}
-          >
+          <Chip size={size} muted>
             +{hidden}
-          </Card>
+          </Chip>
         </li>
       )}
     </ul>
-  );
-}
-
-/** A single label pill (e.g. a project category). */
-export function Chip({
-  children,
-  size = "sm",
-}: {
-  children: React.ReactNode;
-  size?: keyof typeof sizes;
-}) {
-  return (
-    <Card
-      tone="inset"
-      depth="sm"
-      radius="full"
-      className={cn("inline-block font-medium text-muted", sizes[size])}
-    >
-      {children}
-    </Card>
   );
 }

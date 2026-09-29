@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { NAV_OFFSET, scrollToSection } from "@/lib/scroll";
+import {
+  NAV_OFFSET,
+  SECTION_NAVIGATE_EVENT,
+  scrollToSection,
+} from "@/lib/scroll";
 
 /**
  * Tracks which section is in view and provides a `navigate` function that
@@ -98,15 +102,12 @@ export function useScrollSpy(hrefs: readonly string[]) {
     updateActiveSection();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
-    window.addEventListener("portfolio:section-navigate", onSectionNavigate);
+    window.addEventListener(SECTION_NAVIGATE_EVENT, onSectionNavigate);
 
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
-      window.removeEventListener(
-        "portfolio:section-navigate",
-        onSectionNavigate,
-      );
+      window.removeEventListener(SECTION_NAVIGATE_EVENT, onSectionNavigate);
       if (frameId !== null) window.cancelAnimationFrame(frameId);
       if (timeoutRef.current !== null) window.clearTimeout(timeoutRef.current);
       if (pendingTimeoutRef.current !== null) {

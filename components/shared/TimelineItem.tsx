@@ -1,7 +1,7 @@
 import type { TimelineEntry } from "@/lib/data/journey";
 import { cn } from "@/lib/cn";
-import { Card } from "./ui/Card";
-import { Reveal } from "./ui/Reveal";
+import { Reveal } from "../motion/Reveal";
+import { Card } from "../ui/Card";
 
 interface TimelineItemProps {
   entry: TimelineEntry;
@@ -23,7 +23,7 @@ export function TimelineItem({ entry, index, isLast }: TimelineItemProps) {
       {!isLast && (
         <span
           aria-hidden="true"
-          className="absolute bottom-0 left-4 top-10 w-px -translate-x-1/2 bg-border md:left-1/2"
+          className="absolute top-10 bottom-0 left-4 w-px -translate-x-1/2 bg-border md:left-1/2"
         />
       )}
 
@@ -32,9 +32,9 @@ export function TimelineItem({ entry, index, isLast }: TimelineItemProps) {
         tone="inset"
         depth="sm"
         radius="full"
-        className="absolute left-0 top-0.5 flex h-8 w-8 items-center justify-center md:relative md:col-start-2 md:row-start-1 md:top-0"
+        className="absolute top-0.5 left-0 flex h-8 w-8 items-center justify-center md:relative md:top-0 md:col-start-2 md:row-start-1"
       >
-        <span className="relative z-10 h-3 w-3 rounded-full bg-accent-ink ring-2 ring-surface shadow-[0_1px_3px_rgb(var(--accent-strong)/0.45)]" />
+        <span className="relative z-10 h-3 w-3 rounded-full bg-primary-ink ring-2 ring-surface" />
       </Card>
 
       <Reveal
@@ -44,8 +44,10 @@ export function TimelineItem({ entry, index, isLast }: TimelineItemProps) {
         )}
       >
         <Card depth="sm" className="p-6 sm:p-7">
-          <p className="text-xs font-semibold text-accent-ink">{entry.label}</p>
-          <h3 className="mt-2 font-display text-lg font-semibold text-foreground">
+          <p className="text-xs font-semibold text-primary-ink">
+            {entry.label}
+          </p>
+          <h3 className="mt-2 text-lg font-semibold text-foreground">
             {entry.title}
           </h3>
           <p className="mt-2 text-sm leading-relaxed text-muted">

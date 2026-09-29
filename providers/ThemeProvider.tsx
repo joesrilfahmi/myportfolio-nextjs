@@ -5,75 +5,79 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useState,
+  useMemo,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
-
-type Theme = "light" | "dark";
+import { THEME_STORAGE_KEY, type Theme } from "@/lib/theme";
 
 interface ThemeContextValue {
   theme: Theme;
   toggleTheme: () => void;
 }
 
-const THEME_STORAGE_KEY = "portfolio-theme";
-
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-/**
- * Inline, blocking script rendered before hydration. It reads the persisted
- * theme (or falls back to the OS preference) and applies the `dark` class to
- * <html> immediately, so there is no flash of the wrong theme on load.
- */
-export function ThemeInitScript() {
-  const script = `
-    (function () {
-      try {
-        var stored = localStorage.getItem("${THEME_STORAGE_KEY}");
-        var theme = stored === "light" || stored === "dark"
-          ? stored
-          : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-        if (theme === "dark") {
-          document.documentElement.classList.add("dark");
-        }
-      } catch (e) {}
-    })();
-  `;
-  // eslint-disable-next-line react/no-danger
-  return <script dangerouslySetInnerHTML={{ __html: script }} />;
+/* The <html> class is the source of truth (set before hydration by
+   ThemeScript); React just subscribes to it. */
+
+const listeners = new Set<() => void>();
+
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
 }
 
-function applyTheme(theme: Theme) {
-  const root = document.documentElement;
+const getSnapshot = (): Theme =>
+  document.documentElement.classList.contains("dark") ? "dark" : "light";
+const getServerSnapshot = (): Theme => "light";
 
-  root.classList.toggle("dark", theme === "dark");
+function setTheme(theme: Theme, persist: boolean) {
+  document.documentElement.classList.toggle("dark", theme === "dark");
 
+  if (persist) {
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch {
+      // Storage may be unavailable (privacy mode); the theme still applies
+      // for this session.
+    }
+  }
+  listeners.forEach((listener) => listener());
+}
+
+function hasSavedTheme() {
   try {
-    localStorage.setItem(THEME_STORAGE_KEY, theme);
+    return localStorage.getItem(THEME_STORAGE_KEY) !== null;
   } catch {
-    // localStorage may be unavailable (e.g. privacy mode) — theme still
-    // works for the current session.
+    return false;
   }
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
+  // Until the visitor picks a theme, follow the operating system live.
   useEffect(() => {
-    const isDark = document.documentElement.classList.contains("dark");
-    setTheme(isDark ? "dark" : "light");
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = (event: MediaQueryListEvent) => {
+      if (!hasSavedTheme()) setTheme(event.matches ? "dark" : "light", false);
+    };
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
   }, []);
 
-  const toggleTheme = useCallback(() => {
-    const next: Theme = theme === "dark" ? "light" : "dark";
-    applyTheme(next);
-    setTheme(next);
-  }, [theme]);
+  const toggleTheme = useCallback(
+    () => setTheme(getSnapshot() === "dark" ? "light" : "dark", true),
+    [],
+  );
+
+  const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 }
 

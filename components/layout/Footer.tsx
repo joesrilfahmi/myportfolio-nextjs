@@ -1,25 +1,22 @@
 import { personalInfo } from "@/lib/data/shared";
-import { SocialLinks } from "../SocialLinks";
+import { Reveal } from "../motion/Reveal";
+import { SocialLinks } from "../shared/SocialLinks";
 import { Card } from "../ui/Card";
-import { Reveal } from "../ui/Reveal";
 
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mx-auto max-w-6xl px-6 pb-10 pt-6">
+    <footer className="mx-auto max-w-6xl px-6 pt-6 pb-10">
       <Reveal>
         <Card
           depth="sm"
-          radius="container"
+          radius="4xl"
           className="flex flex-col items-center gap-6 px-6 py-8 text-center sm:flex-row sm:justify-between sm:text-left"
         >
-          <div>
-            <p className="font-display text-lg font-semibold text-foreground">
-              {personalInfo.name}
-            </p>
-            {/* <p className="mt-1 text-sm text-muted">{personalInfo.role}</p> */}
-          </div>
+          <p className="text-lg font-semibold text-foreground">
+            {personalInfo.name}
+          </p>
 
           <SocialLinks />
 

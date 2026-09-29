@@ -1,12 +1,6 @@
 import { cn } from "./cn";
 
-/**
- * Single source of truth for building neumorphic surfaces.
- *
- * The class names are written out as literals on purpose: Tailwind only keeps
- * `@layer components` rules whose class names it can find in the source, so
- * building them dynamically (`neu-${depth}`) would get them purged.
- */
+/** Single source of truth for building neumorphic surface classes. */
 export type NeuDepth = "sm" | "md" | "lg";
 export type NeuTone = "raised" | "inset";
 
@@ -19,7 +13,7 @@ const depthClass: Record<NeuDepth, string> = {
 interface NeuOptions {
   tone?: NeuTone;
   depth?: NeuDepth;
-  /** Adds the hover response: raised surfaces lift, inset wells pop out. */
+  /** Inset wells rise to raised on hover (raised surfaces are moved by Motion). */
   interactive?: boolean;
 }
 
@@ -32,6 +26,6 @@ export function neu({
     "neu",
     depthClass[depth],
     tone === "inset" && "neu-well",
-    interactive && (tone === "raised" ? "neu-lift" : "neu-pop"),
+    interactive && tone === "inset" && "neu-pop",
   );
 }

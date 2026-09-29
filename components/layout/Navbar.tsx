@@ -2,12 +2,14 @@
 
 import { useEffect, useState, type MouseEvent } from "react";
 import { Menu, X } from "lucide-react";
+import { AnimatePresence, m } from "motion/react";
 import { navLinks, personalInfo } from "@/lib/data/shared";
 import { cn } from "@/lib/cn";
+import { transitions } from "@/lib/motion";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import { Card } from "../ui/Card";
 import { IconButton } from "../ui/Button";
-import { ThemeToggle } from "../ThemeToggle";
+import { ThemeToggle } from "../shared/ThemeToggle";
 
 const sectionHrefs = navLinks.map((link) => link.href);
 
@@ -20,20 +22,31 @@ const initials = personalInfo.name
 /** Delay before scrolling so the mobile menu can finish closing first. */
 const MENU_CLOSE_DELAY = 250;
 
+const linkLayouts = {
+  desktop: {
+    list: "flex items-center gap-1",
+    link: "rounded-full px-4 py-2",
+    radius: 9999,
+  },
+  mobile: {
+    list: "flex flex-col gap-1",
+    link: "rounded-2xl px-4 py-3",
+    radius: 16,
+  },
+} as const;
+
 interface NavLinksProps {
   activeHref: string;
   onNavigate: (event: MouseEvent<HTMLAnchorElement>, href: string) => void;
-  variant: "desktop" | "mobile";
+  variant: keyof typeof linkLayouts;
 }
 
 /** The link list, rendered once per layout (desktop bar / mobile sheet). */
 function NavLinks({ activeHref, onNavigate, variant }: NavLinksProps) {
-  const isDesktop = variant === "desktop";
+  const layout = linkLayouts[variant];
 
   return (
-    <ul
-      className={isDesktop ? "flex items-center gap-1" : "flex flex-col gap-1"}
-    >
+    <ul className={layout.list}>
       {navLinks.map(({ label, href }) => {
         const isActive = activeHref === href;
 
@@ -45,22 +58,23 @@ function NavLinks({ activeHref, onNavigate, variant }: NavLinksProps) {
               aria-current={isActive ? "location" : undefined}
               className={cn(
                 "relative z-10 block text-sm font-medium transition-colors duration-300 ease-neu",
-                isDesktop ? "rounded-full px-4 py-2" : "rounded-2xl px-4 py-3",
+                layout.link,
                 isActive
-                  ? "text-accent-ink"
+                  ? "text-primary-ink"
                   : "text-muted hover:text-foreground",
               )}
             >
               {label}
             </a>
 
-            {/* Keep the active surface fixed to its item while scrolling. */}
+            {/* One shared indicator that slides between links. */}
             {isActive && (
-              <span
-                className={cn(
-                  "neu neu-sm neu-well absolute inset-0",
-                  isDesktop ? "rounded-full" : "rounded-2xl",
-                )}
+              <m.span
+                layoutId={`nav-active-${variant}`}
+                transition={transitions.spring}
+                style={{ borderRadius: layout.radius }}
+                aria-hidden="true"
+                className="neu neu-sm neu-well absolute inset-0"
               />
             )}
           </li>
@@ -102,12 +116,8 @@ export function Navbar() {
             href="#top"
             label="Back to top"
             accent
-            onClick={(event) => {
-              event.preventDefault();
-              setIsOpen(false);
-              navigate("#top");
-            }}
-            className="font-display text-sm font-bold tracking-tight"
+            onClick={() => setIsOpen(false)}
+            className="text-sm font-bold tracking-tight"
           >
             {initials}
           </IconButton>
@@ -130,26 +140,36 @@ export function Navbar() {
               onClick={() => setIsOpen((open) => !open)}
               className="md:hidden"
             >
-              {isOpen ? <X size={18} /> : <Menu size={18} />}
+              {isOpen ? (
+                <X size={18} aria-hidden="true" />
+              ) : (
+                <Menu size={18} aria-hidden="true" />
+              )}
             </IconButton>
           </div>
         </Card>
 
-        {isOpen && (
-          <nav
-            id="mobile-menu"
-            aria-label="Mobile"
-            className="animate-menu-in md:hidden"
-          >
-            <Card radius="3xl" className="mt-3 p-3">
-              <NavLinks
-                variant="mobile"
-                activeHref={activeHref}
-                onNavigate={handleNavigate(true)}
-              />
-            </Card>
-          </nav>
-        )}
+        <AnimatePresence>
+          {isOpen && (
+            <m.nav
+              id="mobile-menu"
+              aria-label="Mobile"
+              initial={{ opacity: 0, y: -10, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.98 }}
+              transition={transitions.fast}
+              className="origin-top md:hidden"
+            >
+              <Card radius="3xl" className="mt-3 p-3">
+                <NavLinks
+                  variant="mobile"
+                  activeHref={activeHref}
+                  onNavigate={handleNavigate(true)}
+                />
+              </Card>
+            </m.nav>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );
