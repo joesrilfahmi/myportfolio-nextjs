@@ -29,8 +29,15 @@ VITE_TELEGRAM_CHAT_ID=
 VITE_EMAILJS_SERVICE_ID=
 VITE_EMAILJS_TEMPLATE_ID=
 VITE_EMAILJS_PUBLIC_KEY=
+GITHUB_TOKEN=
+GITHUB_USERNAME=
 NEXT_PUBLIC_SITE_URL=https://your-domain.com   # canonical URL for Open Graph
 ```
+
+Set `GITHUB_USERNAME` and a GitHub personal access token in `GITHUB_TOKEN` to
+show the contribution calendar in the About section. The token is used only
+server-side; do not rename it with a `NEXT_PUBLIC_` prefix. The calendar is
+cached for one hour.
 
 ## Project structure
 

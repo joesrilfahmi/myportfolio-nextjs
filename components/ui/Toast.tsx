@@ -3,7 +3,7 @@
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { AnimatePresence, m } from "motion/react";
 import { cn } from "@/lib/cn";
-import { transitions } from "@/lib/motion";
+import { surfaceVariants, transitions } from "@/lib/motion";
 import { neu } from "@/lib/neu";
 
 export type ToastStatus = "success" | "error";
@@ -25,9 +25,10 @@ export function Toast({ status, message }: ToastProps) {
           <m.div
             key={status}
             role={isError ? "alert" : "status"}
-            initial={{ opacity: 0, y: 32 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 16 }}
+            variants={surfaceVariants.toast}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
             transition={transitions.fast}
             className={cn(
               neu(),

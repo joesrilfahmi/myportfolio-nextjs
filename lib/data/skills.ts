@@ -1,61 +1,48 @@
-import { Database, Monitor, Server, Smartphone } from "lucide-react";
-import type { IconType } from "@/types/ui";
+import {
+  siBootstrap,
+  siCss,
+  siDart,
+  siFlutter,
+  siHtml5,
+  siJavascript,
+  siLaravel,
+  siMysql,
+  siNextdotjs,
+  siNodedotjs,
+  siPhp,
+  siPostgresql,
+  siReact,
+  siSvelte,
+  siTailwindcss,
+  siTypescript,
+  type SimpleIcon,
+} from "simple-icons";
 
 export const skillsContent = {
   title: "Skills",
-  description:
-    "Tools I reach for regularly, grouped by where they fit in a product.",
+  description: "Technologies I use to build web and mobile products.",
 } as const;
 
-export type SkillCategory = "frontend" | "backend" | "mobile" | "database";
-
-export interface SkillGroupData {
-  id: SkillCategory;
-  title: string;
-  note: string;
-  icon: IconType;
-  skills: string[];
-  wide?: boolean;
+export interface Skill {
+  name: string;
+  icon: SimpleIcon;
 }
 
-export const skillGroups: SkillGroupData[] = [
-  {
-    id: "frontend",
-    icon: Monitor,
-    title: "Frontend",
-    note: "Interfaces that stay maintainable as they grow.",
-    wide: true,
-    skills: [
-      "HTML",
-      "CSS",
-      "JavaScript",
-      "Tailwind",
-      "Bootstrap",
-      "TypeScript",
-      "React",
-      "Next.js",
-      "Svelte",
-    ],
-  },
-  {
-    id: "backend",
-    icon: Server,
-    title: "Backend",
-    note: "APIs and services that hold up under real usage.",
-    skills: ["PHP", "Node.js", "Laravel"],
-  },
-  {
-    id: "mobile",
-    icon: Smartphone,
-    title: "Mobile",
-    note: "Cross-platform apps from a single codebase.",
-    skills: ["Dart", "Flutter"],
-  },
-  {
-    id: "database",
-    icon: Database,
-    title: "Database",
-    note: "Schemas designed around how the data is actually used.",
-    skills: ["MySQL", "PostgreSQL"],
-  },
+export const skills: Skill[] = [
+  { name: "HTML", icon: siHtml5 },
+  { name: "CSS", icon: siCss },
+  { name: "JavaScript", icon: siJavascript },
+  { name: "Tailwind CSS", icon: siTailwindcss },
+  { name: "Bootstrap", icon: siBootstrap },
+  { name: "TypeScript", icon: siTypescript },
+  { name: "React", icon: siReact },
+  { name: "Next.js", icon: siNextdotjs },
+  { name: "Svelte", icon: siSvelte },
+  { name: "PHP", icon: siPhp },
+  { name: "Node.js", icon: siNodedotjs },
+  { name: "Laravel", icon: siLaravel },
+  { name: "Dart", icon: siDart },
+  { name: "Flutter", icon: siFlutter },
+  { name: "MySQL", icon: siMysql },
+  { name: "PostgreSQL", icon: siPostgresql },
 ];

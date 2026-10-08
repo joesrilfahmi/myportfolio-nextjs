@@ -5,7 +5,7 @@ import { Menu, X } from "lucide-react";
 import { AnimatePresence, m } from "motion/react";
 import { navLinks, personalInfo } from "@/lib/data/shared";
 import { cn } from "@/lib/cn";
-import { transitions } from "@/lib/motion";
+import { surfaceVariants, transitions } from "@/lib/motion";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import { Card } from "../ui/Card";
 import { IconButton } from "../ui/Button";
@@ -154,9 +154,10 @@ export function Navbar() {
             <m.nav
               id="mobile-menu"
               aria-label="Mobile"
-              initial={{ opacity: 0, y: -10, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.98 }}
+              variants={surfaceVariants.dropdown}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
               transition={transitions.fast}
               className="origin-top md:hidden"
             >

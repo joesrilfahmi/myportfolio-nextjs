@@ -42,9 +42,23 @@ export const revealVariants = {
 
 export type RevealVariant = keyof typeof revealVariants;
 
+/** Shared neumorphic entrance/exit motion for floating surfaces. */
+export const surfaceVariants = {
+  dropdown: {
+    hidden: { opacity: 0, y: -10, scale: 0.98, "--elev": 0 },
+    visible: { opacity: 1, y: 0, scale: 1, "--elev": 1 },
+    exit: { opacity: 0, y: -10, scale: 0.98, "--elev": 0 },
+  },
+  toast: {
+    hidden: { opacity: 0, y: 24, "--elev": 0 },
+    visible: { opacity: 1, y: 0, "--elev": 1 },
+    exit: { opacity: 0, y: 12, "--elev": 0 },
+  },
+} satisfies Record<string, Variants>;
+
 /** Interaction targets, deliberately tiny. */
 export const interactions = {
-  cardHover: { y: -2 },
+  cardHover: { y: -2, "--elev": 1.08 },
   buttonHover: { y: -2 },
   buttonTap: { y: 0 },
   iconTap: { y: 0 },
