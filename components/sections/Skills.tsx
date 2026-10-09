@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { skills, skillsContent } from "@/lib/data/skills";
 import { stagger } from "@/lib/motion";
 import { Reveal } from "../motion/Reveal";
@@ -16,31 +17,35 @@ export function Skills() {
 
       <ul
         aria-label="Technologies"
-        className="flex flex-wrap items-end justify-center gap-x-5 gap-y-8 sm:justify-start sm:gap-x-8 sm:gap-y-10"
+        className="grid grid-cols-2 gap-5 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4 lg:gap-8"
       >
         {skills.map(({ name, icon }, index) => (
           <li key={name}>
-            <Reveal
-              delay={stagger(index % 6)}
-              className="flex w-24 flex-col items-center gap-3 text-center"
-            >
-              <Card
-                as="div"
-                depth="sm"
-                radius="full"
-                interactive
-                className="flex size-[4.5rem] items-center justify-center text-primary-ink sm:size-20"
+            <Reveal delay={stagger(index % 6)} className="h-full">
+              <div
+                className="group h-full"
+                style={{ "--skill-color": `#${icon.hex}` } as CSSProperties}
               >
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  className="size-8 sm:size-9"
-                  fill="currentColor"
+                <Card
+                  as="div"
+                  tone="inset"
+                  depth="sm"
+                  radius="3xl"
+                  className="flex h-full min-h-40 flex-col items-center justify-center gap-5 p-5 text-center transition-colors duration-300 sm:min-h-48 sm:gap-6 sm:p-7"
                 >
-                  <path d={icon.path} />
-                </svg>
-              </Card>
-              <span className="text-sm font-medium text-muted">{name}</span>
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    className="size-10 text-muted transition-colors duration-300 group-hover:text-[var(--skill-color)] sm:size-12"
+                    fill="currentColor"
+                  >
+                    <path d={icon.path} />
+                  </svg>
+                  <span className="text-base font-semibold text-foreground sm:text-lg">
+                    {name}
+                  </span>
+                </Card>
+              </div>
             </Reveal>
           </li>
         ))}
