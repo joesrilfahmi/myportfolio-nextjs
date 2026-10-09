@@ -10,7 +10,7 @@ const loadFeatures = () =>
  * App-wide Motion setup.
  * - LazyMotion: the animation engine loads after first paint; components use
  *   the lightweight `m.*` elements (`strict` enforces that).
- * - reducedMotion="user": transform and layout animations switch off for
+ * - reducedMotion="user": transform animations switch off for
  *   visitors who enable prefers-reduced-motion.
  */
 export function MotionProvider({ children }: { children: ReactNode }) {

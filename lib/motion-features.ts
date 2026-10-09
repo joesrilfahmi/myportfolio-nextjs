@@ -1,8 +1,9 @@
 /**
  * The Motion feature bundle. Kept in its own module so <LazyMotion> can
- * load it asynchronously, after first paint. `domMax` adds the layout
- * animations the navbar's active indicator needs.
+ * load it asynchronously, after first paint. `domAnimation` covers
+ * variants, in-view detection and exit animations: everything the site
+ * uses, without the heavier layout engine.
  */
-import { domMax } from "motion/react";
+import { domAnimation } from "motion/react";
 
-export default domMax;
+export default domAnimation;

@@ -1,41 +1,63 @@
 import { ArrowRight } from "lucide-react";
 import { heroContent } from "@/lib/data/hero";
-import { Reveal } from "../motion/Reveal";
+import { personalInfo } from "@/lib/data/shared";
+import { heroDelay } from "@/lib/motion";
+import { IdentityPanel } from "../shared/IdentityPanel";
 import { Button } from "../ui/Button";
-import { Card } from "../ui/Card";
 import { Section } from "../ui/Section";
+import { Eyebrow } from "../ui/SectionHeading";
 
+/**
+ * Server Component with a CSS-only entrance (`hero-in`), so the first
+ * paint never waits for JavaScript.
+ */
 export function Hero() {
+  const { greeting, headline, summary } = heroContent;
+
   return (
-    <Section id="top" titleId="hero-title" spacing="hero" className="w-full">
-      <Reveal>
-        <Card
-          radius="4xl"
-          depth="md"
-          className="px-6 py-8 sm:px-10 sm:py-12 md:px-12 md:py-14"
-        >
-          <p className="text-base font-medium text-muted sm:text-lg">
-            {heroContent.greeting}
-          </p>
+    <Section id="top" titleId="hero-title" spacing="hero">
+      <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
+        <div className="lg:col-span-7">
+          <Eyebrow className="hero-in">
+            {greeting} {personalInfo.name}
+          </Eyebrow>
+
           <h1
             id="hero-title"
-            className="mt-4 max-w-3xl text-4xl leading-[1.08] font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+            style={heroDelay(80)}
+            className="mt-6 hero-in font-display text-display font-bold text-foreground"
           >
-            Building practical digital experiences.
+            {headline.before}{" "}
+            <span className="text-primary">{headline.emphasis}</span>{" "}
+            {headline.after}
           </h1>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-            {heroContent.summary}
-          </p>
-          <Button
-            href="#projects"
-            variant="primary"
-            className="mt-8"
-            icon={<ArrowRight size={16} strokeWidth={2} />}
+
+          <p
+            style={heroDelay(160)}
+            className="mt-7 max-w-xl hero-in text-lead text-muted"
           >
-            View Projects
-          </Button>
-        </Card>
-      </Reveal>
+            {summary}
+          </p>
+
+          <div
+            style={heroDelay(240)}
+            className="mt-10 flex hero-in flex-wrap gap-4"
+          >
+            <Button
+              href="#projects"
+              variant="primary"
+              icon={<ArrowRight size={16} strokeWidth={2} />}
+            >
+              View Projects
+            </Button>
+            <Button href="#contact">Contact Me</Button>
+          </div>
+        </div>
+
+        <div style={heroDelay(200)} className="hero-in lg:col-span-5 lg:mt-10">
+          <IdentityPanel />
+        </div>
+      </div>
     </Section>
   );
 }

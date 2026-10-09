@@ -1,12 +1,13 @@
 import { getGitHubContributions } from "@/lib/github-contributions";
 import { Card } from "../ui/Card";
 
+/** From no activity (neutral) to the busiest days (full orange). */
 const contributionColors = [
-  "bg-primary-soft",
-  "bg-primary-muted/40",
-  "bg-primary-muted/70",
+  "bg-foreground/10",
+  "bg-primary/35",
+  "bg-primary/60",
+  "bg-primary/85",
   "bg-primary",
-  "bg-primary-active",
 ] as const;
 
 function getContributionColor(count: number) {
@@ -27,9 +28,10 @@ export async function GitHubContributions() {
   if ("error" in contributions) {
     return (
       <Card
-        as="div"
+        tone="inset"
+        radius="4xl"
         role="status"
-        className="mt-12 p-6 text-sm text-muted sm:p-8"
+        className="mt-16 p-6 text-sm text-muted sm:p-8"
       >
         GitHub contributions are temporarily unavailable.
       </Card>
@@ -40,14 +42,15 @@ export async function GitHubContributions() {
 
   return (
     <Card
-      as="div"
+      tone="inset"
+      radius="4xl"
       role="region"
       aria-label="GitHub contributions"
-      className="mt-12 p-6 sm:p-8"
+      className="mt-16 p-6 sm:p-8"
     >
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h3 className="text-lg font-semibold text-foreground">
+          <h3 className="font-display text-lg font-bold text-foreground">
             GitHub Contributions
           </h3>
           <p className="mt-1 text-sm text-muted">
@@ -93,7 +96,6 @@ export async function GitHubContributions() {
                   <span
                     key={day.date}
                     title={`${day.contributionCount} contributions on ${day.date}`}
-                    aria-label={`${day.contributionCount} contributions on ${day.date}`}
                     className={`size-3 rounded-sm ${contributionColors[getContributionColor(day.contributionCount)]}`}
                   />
                 ))}

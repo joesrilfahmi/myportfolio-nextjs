@@ -1,7 +1,6 @@
 import { createElement, type HTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
 import { neu, type NeuDepth, type NeuTone } from "@/lib/neu";
-import { MotionCard, type CardElement } from "../motion/MotionCard";
 
 /** Larger radii for larger surfaces: xl controls -> 4xl page sections. */
 const radii = {
@@ -12,10 +11,9 @@ const radii = {
   full: "rounded-full",
 } as const;
 
-interface CardProps extends Omit<
-  HTMLAttributes<HTMLElement>,
-  "style" | "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart"
-> {
+type CardElement = "div" | "article" | "section" | "li" | "form";
+
+interface CardProps extends HTMLAttributes<HTMLElement> {
   as?: CardElement;
   /** `raised` stands out of the surface, `inset` is a recessed well. */
   tone?: NeuTone;
@@ -27,8 +25,8 @@ interface CardProps extends Omit<
 
 /**
  * The one neumorphic container. Cards, wells, chips, the navbar and forms
- * all use it. Static cards render as plain elements (no client JS); only
- * `interactive` ones hydrate to animate on hover.
+ * all use it. It is a plain Server Component: hover and press feedback
+ * are CSS, so no client JavaScript is shipped for it.
  */
 export function Card({
   as = "div",
@@ -39,14 +37,8 @@ export function Card({
   className,
   ...props
 }: CardProps) {
-  const classes = cn(
-    neu({ tone, depth, interactive }),
-    radii[radius],
-    className,
-  );
-
-  if (interactive) {
-    return <MotionCard as={as} className={classes} {...props} />;
-  }
-  return createElement(as, { className: classes, ...props });
+  return createElement(as, {
+    className: cn(neu({ tone, depth, interactive }), radii[radius], className),
+    ...props,
+  });
 }

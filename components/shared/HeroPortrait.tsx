@@ -1,14 +1,12 @@
-"use client";
-
 import Image from "next/image";
 import { personalInfo } from "@/lib/data/shared";
 import { Card } from "../ui/Card";
 
-/** Profile photo in a neumorphic frame. */
+/** Profile image in a neumorphic frame: a raised ring around a recessed disc. */
 export function HeroPortrait() {
   return (
-    <div className="relative aspect-square w-[min(11.5rem,calc(100vw-8rem))] sm:w-72 md:w-56 lg:w-64">
-      <Card radius="full" depth="lg" className="h-full w-full p-3.5">
+    <div className="relative aspect-square w-48 sm:w-56 lg:w-60">
+      <Card radius="full" depth="md" className="h-full w-full p-3">
         <Card
           tone="inset"
           radius="full"
@@ -19,7 +17,7 @@ export function HeroPortrait() {
             alt={`Portrait of ${personalInfo.name}`}
             fill
             priority
-            sizes="(min-width: 1024px) 416px, (min-width: 768px) 368px, (min-width: 640px) 320px, 304px"
+            sizes="(min-width: 1024px) 240px, (min-width: 640px) 224px, 192px"
             className="object-cover"
           />
         </Card>

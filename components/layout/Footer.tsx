@@ -1,28 +1,41 @@
-import { personalInfo } from "@/lib/data/shared";
-import { Reveal } from "../motion/Reveal";
+import { navLinks, personalInfo } from "@/lib/data/shared";
 import { SocialLinks } from "../shared/SocialLinks";
-import { Card } from "../ui/Card";
+import { Wordmark } from "./Wordmark";
 
+/** Quiet footer: no card, just a hairline, identity, links and copyright. */
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mx-auto max-w-6xl px-6 pt-6 pb-10 md:mx-0 md:max-w-none md:px-0">
-      <Reveal>
-        <Card
-          depth="sm"
-          radius="4xl"
-          className="flex flex-col items-center gap-6 px-6 py-8 text-center sm:flex-row sm:justify-between sm:text-left"
-        >
-          <p className="text-lg font-semibold text-foreground">
-            {personalInfo.name}
-          </p>
+    <footer className="mx-auto w-full max-w-6xl px-5 pb-28 sm:px-8 md:pb-12">
+      <div className="border-t border-border pt-10">
+        <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+          <Wordmark />
 
-          <SocialLinks />
+          <nav aria-label="Footer">
+            <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
+              {navLinks
+                .filter(({ href }) => href !== "#top")
+                .map(({ label, href }) => (
+                  <li key={href}>
+                    <a
+                      href={href}
+                      className="rounded transition-colors duration-300 hover:text-primary-ink"
+                    >
+                      {label}
+                    </a>
+                  </li>
+                ))}
+            </ul>
+          </nav>
 
-          <p className="text-sm text-muted">© {year} All rights reserved.</p>
-        </Card>
-      </Reveal>
+          <SocialLinks iconSize={17} />
+        </div>
+
+        <p className="mt-10 text-sm text-muted">
+          © {year} {personalInfo.name}. All rights reserved.
+        </p>
+      </div>
     </footer>
   );
 }

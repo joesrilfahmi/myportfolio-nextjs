@@ -3,7 +3,8 @@ import { cn } from "@/lib/cn";
 
 const spacings = {
   default: "py-20 md:py-28",
-  hero: "py-12 pb-32 md:py-8",
+  /** Clears the top navbar (md and up) and fills the first screen on large displays. */
+  hero: "pt-16 pb-20 md:pt-36 md:pb-24 lg:flex lg:min-h-svh lg:items-center",
 } as const;
 
 interface SectionProps {
@@ -27,9 +28,14 @@ export function Section({
     <section
       id={id}
       aria-labelledby={titleId}
-      className={cn("mx-auto max-w-6xl px-4", spacings[spacing], className)}
+      className={cn(
+        "mx-auto w-full max-w-6xl scroll-mt-24 px-5 sm:px-8",
+        spacings[spacing],
+        className,
+      )}
     >
-      {children}
+      {/* The hero's flex centering needs a full-width child. */}
+      <div className="w-full">{children}</div>
     </section>
   );
 }

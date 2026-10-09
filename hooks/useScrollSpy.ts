@@ -1,9 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  NAV_OFFSET,
-  SECTION_NAVIGATE_EVENT,
-  scrollToSection,
-} from "@/lib/scroll";
+import { NAV_OFFSET, scrollToSection } from "@/lib/scroll";
 
 /**
  * Tracks which section is in view and provides a `navigate` function that
@@ -94,20 +90,13 @@ export function useScrollSpy(hrefs: readonly string[]) {
       }
     };
 
-    const onSectionNavigate = (event: Event) => {
-      const href = (event as CustomEvent<string>).detail;
-      if (typeof href === "string") navigate(href);
-    };
-
     updateActiveSection();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
-    window.addEventListener(SECTION_NAVIGATE_EVENT, onSectionNavigate);
 
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
-      window.removeEventListener(SECTION_NAVIGATE_EVENT, onSectionNavigate);
       if (frameId !== null) window.cancelAnimationFrame(frameId);
       if (timeoutRef.current !== null) window.clearTimeout(timeoutRef.current);
       if (pendingTimeoutRef.current !== null) {
@@ -115,7 +104,7 @@ export function useScrollSpy(hrefs: readonly string[]) {
       }
       window.history.scrollRestoration = "auto";
     };
-  }, [hrefs, navigate]);
+  }, [hrefs]);
 
   return { activeHref, navigate };
 }

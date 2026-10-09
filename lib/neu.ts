@@ -13,7 +13,7 @@ const depthClass: Record<NeuDepth, string> = {
 interface NeuOptions {
   tone?: NeuTone;
   depth?: NeuDepth;
-  /** Inset wells rise to raised on hover (raised surfaces are moved by Motion). */
+  /** Raised surfaces lift on hover; inset wells rise to raised. */
   interactive?: boolean;
 }
 
@@ -26,6 +26,6 @@ export function neu({
     "neu",
     depthClass[depth],
     tone === "inset" && "neu-well",
-    interactive && tone === "inset" && "neu-pop",
+    interactive && (tone === "inset" ? "neu-pop" : "neu-lift"),
   );
 }

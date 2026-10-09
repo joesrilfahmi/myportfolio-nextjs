@@ -3,12 +3,13 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ------------------------------------------------------------------
-   Registered custom properties. Registering them lets the browser
-   animate them, which powers the "extrude" reveal on neumorphic surfaces.
-   ------------------------------------------------------------------ */
+   Registered custom property. Registering it lets the browser animate
+   it, which powers the "extrude" reveal and the hover lift on
+   neumorphic surfaces.
 
-/* Elevation multiplier for shadows. 0 = flat on the surface, 1 = fully
-   raised. It inherits, so a whole group can rise out of the surface. */
+   --elev is an elevation multiplier for shadows: 0 = flat on the
+   surface, 1 = fully raised. It inherits, so a group can rise together.
+   ------------------------------------------------------------------ */
 @property --elev {
   syntax: "<number>";
   inherits: true;
@@ -16,102 +17,110 @@
 }
 
 /* ------------------------------------------------------------------
-   Design tokens
+   Design tokens - Professional Orange Neumorphism
 
-   Neumorphism needs the page and its surfaces to share one color, so
-   background, surface, raised and inset are all the same base. Depth
-   comes from the gradient (`surface-from` -> `surface-to`) and shadows.
+   Brand key: #D65400. Neumorphism needs the page and its surfaces to
+   share one colour, so background / surface / raised / inset are the
+   same warm base; depth comes from a faint gradient and paired shadows.
 
-   Every text/background pair below was checked against WCAG AA on the
-   base color and both gradient ends: foreground, muted and primary-ink
-   >= 4.5:1 (primary-ink is also the 2px focus ring, which needs 3:1).
+   Contrast (WCAG), measured on the base and both gradient ends:
+     foreground  >= 11.5:1     muted       >= 5.5:1
+     primary-ink >= 5.0:1      (text, icons and the focus ring)
+     primary-foreground on --primary = 4.7:1 (white would be 4.1:1, so
+     the primary button uses dark text).
+   `--primary` itself is only used for fills and decoration (>= 3:1).
    ------------------------------------------------------------------ */
 
 :root {
   color-scheme: light;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* Neumorphic base. A raised surface is the gradient below; wells are
-     the flat base color. */
-  --background: #dde3ec;
-  --surface: #dde3ec;
-  --surface-raised: #dde3ec;
-  --surface-inset: #dde3ec;
-  --surface-from: #e2e8f1;
-  --surface-to: #d8dee7;
+  /* Warm off-white base */
+  --background: #ece3da;
+  --surface: #ece3da;
+  --surface-raised: #ece3da;
+  --surface-inset: #ece3da;
+  --surface-from: #f2e9e0;
+  --surface-to: #e5dbd1;
 
   /* Text */
-  --foreground: #3c4858;
-  --muted: #566276;
+  --foreground: #2a211b;
+  --muted: #5f5249;
   --border: color-mix(in srgb, var(--foreground) 12%, transparent);
 
-  /* Primary blue: calm, slightly desaturated */
-  --primary: #3a69ce;
-  --primary-hover: #3360c0;
-  --primary-active: #2a56b0;
-  --primary-foreground: #ffffff;
-  --primary-ink: #2a56b0; /* text-safe blue on any surface */
-  --primary-soft: color-mix(in srgb, var(--primary) 14%, transparent);
-  --primary-muted: #7d98d0; /* decorative strokes and fills */
+  /* Orange identity */
+  --primary: #d65400;
+  --primary-hover: #e15b05;
+  --primary-active: #d65400;
+  --primary-foreground: #140c07;
+  --primary-ink: #9c3b00; /* text-safe orange on light surfaces */
+  --primary-soft: color-mix(in srgb, var(--primary) 12%, transparent);
+  --primary-muted: #d9946a; /* decorative strokes and fills */
 
   --danger: #b3261e;
 
-  /* Neumorphism shadows (raised: outer pair + 1px edge; wells: inset pair) */
-  --shadow-dark: rgb(152 161 174 / 0.75);
-  --shadow-dark-inset: rgb(152 161 174 / 0.85);
-  --shadow-light: rgb(255 255 255 / 0.95);
-  --edge-light: rgb(255 255 255 / 0.7);
-  --edge-dark: rgb(152 161 174 / 0.35);
+  /* Shadows: warm-tinted dark + white highlight */
+  --shadow-dark: rgb(166 140 118 / 0.5);
+  --shadow-dark-inset: rgb(166 140 118 / 0.6);
+  --shadow-light: rgb(255 255 255 / 0.85);
+  --edge-light: rgb(255 255 255 / 0.65);
+  --edge-dark: rgb(166 140 118 / 0.25);
 
-  /* Primary button depth (its own pair so each theme can tune it) */
-  --primary-shadow-dark: color-mix(
-    in srgb,
-    var(--primary-active) 42%,
-    transparent
-  );
-  --primary-shadow-light: color-mix(
-    in srgb,
-    var(--primary-hover) 30%,
-    white 12%
-  );
+  /* Primary button depth */
+  --primary-shadow-dark: rgb(150 60 0 / 0.38);
+  --primary-shadow-light: rgb(255 255 255 / 0.7);
 }
 
 .dark {
   color-scheme: dark;
 
-  --background: #2a2d35;
-  --surface: #2a2d35;
-  --surface-raised: #2a2d35;
-  --surface-inset: #2a2d35;
-  --surface-from: #30333b;
-  --surface-to: #24272f;
+  /* Deep charcoal with a warm undertone */
+  --background: #27221e;
+  --surface: #27221e;
+  --surface-raised: #27221e;
+  --surface-inset: #27221e;
+  --surface-from: #2d2824;
+  --surface-to: #211d1a;
 
-  --foreground: #e2e8f0;
-  --muted: #a3adbd;
+  --foreground: #f1e9e2;
+  --muted: #b3a79c;
 
-  /* Same solid blue key as light mode; -ink is the lighter tint used for
-     text and icons on dark surfaces. */
-  --primary: #3f6fd8;
-  --primary-hover: #4a7ae3;
-  --primary-active: #3560c4;
-  --primary-ink: #8fb2fa;
-  --primary-muted: #5f7fc4;
+  /* Same brand key; -ink is the lighter tint for text on dark surfaces */
+  --primary: #d65400;
+  --primary-hover: #e15b05;
+  --primary-active: #d65400;
+  --primary-foreground: #140c07;
+  --primary-ink: #ff8c4a;
+  --primary-muted: #a4521e;
 
   --danger: #ff8a80;
 
-  --shadow-dark: rgb(10 13 21 / 0.85);
-  --shadow-dark-inset: rgb(10 13 21 / 0.95);
-  --shadow-light: rgb(87 90 98 / 0.55);
-  --edge-light: rgb(82 85 93 / 0.18);
-  --edge-dark: rgb(10 13 21 / 0.55);
+  --shadow-dark: rgb(8 6 5 / 0.7);
+  --shadow-dark-inset: rgb(8 6 5 / 0.8);
+  --shadow-light: rgb(88 76 68 / 0.38);
+  --edge-light: rgb(120 104 94 / 0.16);
+  --edge-dark: rgb(8 6 5 / 0.5);
 
-  --primary-shadow-dark: rgb(10 13 21 / 0.6);
-  --primary-shadow-light: rgb(96 132 220 / 0.16);
+  --primary-shadow-dark: rgb(8 6 5 / 0.6);
+  --primary-shadow-light: rgb(255 140 74 / 0.14);
 }
 
-/* Expose the tokens as Tailwind utilities (bg-surface, text-primary-ink…) */
+/* Expose the tokens as Tailwind utilities (bg-surface, text-primary-ink...) */
 @theme inline {
-  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display:
+    var(--font-space-grotesk), var(--font-inter), ui-sans-serif, system-ui,
+    sans-serif;
+
+  /* Type scale. Display and title are fluid so they never overflow. */
+  --text-display: clamp(2.25rem, 5.2vw + 0.5rem, 5rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.035em;
+  --text-title: clamp(2rem, 3.4vw + 0.9rem, 3.5rem);
+  --text-title--line-height: 1.05;
+  --text-title--letter-spacing: -0.03em;
+  --text-lead: clamp(1.0625rem, 0.4vw + 0.98rem, 1.3125rem);
+  --text-lead--line-height: 1.65;
 
   --color-background: var(--background);
   --color-surface: var(--surface);
@@ -147,13 +156,13 @@
 
   html {
     scroll-behavior: smooth;
-    scroll-snap-type: y mandatory;
     -webkit-tap-highlight-color: transparent;
   }
 
   body {
     background-color: var(--background);
     color: var(--foreground);
+    overflow-x: clip;
   }
 
   h1,
@@ -167,7 +176,7 @@
     color: var(--primary-foreground);
   }
 
-  /* Visible keyboard focus everywhere, 3:1+ against every surface. */
+  /* Visible keyboard focus everywhere, >= 3:1 against every surface. */
   :focus-visible {
     outline: 2px solid var(--primary-ink);
     outline-offset: 3px;
@@ -189,30 +198,27 @@
    Neumorphic surface
 
    Every surface owns two stacked shadow layers: a raised one (::before)
-   and an inset one (::after). States are expressed by cross-fading
-   them, so "raised -> pressed" morphs smoothly, something a plain
-   box-shadow transition cannot do between outer and inset shadows.
+   and an inset one (::after). States cross-fade between them, so
+   "raised -> pressed" morphs smoothly, which a plain box-shadow
+   transition cannot do between outer and inset shadows.
 
    Raised = 1px edge highlights + a dark/light pair at --d / --b.
    Wells  = the same pair, inset, at half the distance and blur.
-   Depth 14px / 28px is the design preset; smaller depths scale it down
-   for small controls (icon buttons, chips).
-
-   CSS owns the shadow states. Movement (hover lift) is owned by Motion,
-   so the two never fight over `transform`.
+   The shadows are deliberately soft: 10px / 20px is the preset.
 
    Modifiers
      depth   .neu-sm | .neu-md (preset) | .neu-lg
-     start   .neu-well          starts inset (a flat, recessed well)
-     hover   .neu-pop           wells rise to raised
-     active  .neu-press         any surface sinks in when pressed
-     .neu-over                  draws the inset shadow above the content
+     start   .neu-well     starts inset (a recessed well)
+     hover   .neu-pop      wells rise to raised
+             .neu-lift     raised surfaces lift 2px and deepen
+     active  .neu-press    any surface sinks in when pressed
+             .neu-over     draws the inset shadow above the content
    ------------------------------------------------------------------ */
 
 @layer components {
   .neu {
-    --d: 14px;
-    --b: 28px;
+    --d: 10px;
+    --b: 20px;
     --raised: 1;
     --inset: 0;
 
@@ -224,7 +230,10 @@
       var(--surface-from) 0%,
       var(--surface-to) 100%
     );
-    transition: color 0.3s var(--ease);
+    transition:
+      color 0.3s var(--ease),
+      transform 0.3s var(--ease),
+      --elev 0.3s var(--ease);
   }
 
   .neu::before,
@@ -250,7 +259,7 @@
         calc(var(--b) * var(--elev)) var(--shadow-light);
   }
 
-  /* Inset layer: half the raised distance and blur (7px / 14px at md). */
+  /* Inset layer: half the raised distance and blur. */
   .neu::after {
     opacity: var(--inset);
     box-shadow:
@@ -263,16 +272,16 @@
   }
 
   .neu-sm {
-    --d: 5px;
-    --b: 10px;
+    --d: 4px;
+    --b: 8px;
   }
   .neu-md {
-    --d: 14px;
-    --b: 28px;
+    --d: 10px;
+    --b: 20px;
   }
   .neu-lg {
-    --d: 20px;
-    --b: 40px;
+    --d: 16px;
+    --b: 32px;
   }
 
   /* Wells are always flat: a gradient would clash with the inset shading. */
@@ -291,48 +300,76 @@
       --raised: 1;
       --inset: 0;
     }
+    .neu-lift:hover {
+      transform: translateY(-2px);
+      --elev: 1.1;
+    }
   }
 
   .neu-press:active {
     --raised: 0;
     --inset: 1;
+    transform: translateY(0);
   }
 
-  /* Primary action: a solid blue key with tactile neumorphic depth. */
+  /* Primary action: a solid orange key with tactile neumorphic depth. */
   .btn-primary {
     color: var(--primary-foreground);
     background-color: var(--primary);
-    border: 1px solid color-mix(in srgb, var(--primary-hover) 70%, white);
+    border: 1px solid color-mix(in srgb, var(--primary) 70%, white);
     box-shadow:
-      6px 6px 12px var(--primary-shadow-dark),
-      -6px -6px 12px var(--primary-shadow-light),
-      inset 1px 1px 2px rgb(255 255 255 / 0.28),
-      inset -2px -2px 4px rgb(0 0 0 / 0.14);
+      5px 5px 10px var(--primary-shadow-dark),
+      -5px -5px 10px var(--primary-shadow-light),
+      inset 1px 1px 2px rgb(255 255 255 / 0.3),
+      inset -2px -2px 4px rgb(0 0 0 / 0.12);
     transition:
       background-color 0.3s var(--ease),
-      box-shadow 0.45s var(--ease);
+      box-shadow 0.45s var(--ease),
+      transform 0.25s var(--ease);
   }
   @media (hover: hover) {
     .btn-primary:hover:not(:disabled) {
       background-color: var(--primary-hover);
+      transform: translateY(-2px);
       box-shadow:
-        8px 8px 16px var(--primary-shadow-dark),
-        -8px -8px 16px var(--primary-shadow-light),
-        inset 1px 1px 2px rgb(255 255 255 / 0.32),
-        inset -2px -2px 4px rgb(0 0 0 / 0.14);
+        7px 7px 14px var(--primary-shadow-dark),
+        -7px -7px 14px var(--primary-shadow-light),
+        inset 1px 1px 2px rgb(255 255 255 / 0.34),
+        inset -2px -2px 4px rgb(0 0 0 / 0.12);
     }
   }
   .btn-primary:active:not(:disabled) {
-    background-color: var(--primary-active);
+    transform: translateY(0);
     box-shadow:
-      inset 4px 4px 8px rgb(0 0 0 / 0.24),
-      inset -3px -3px 7px rgb(255 255 255 / 0.2);
+      inset 4px 4px 8px rgb(0 0 0 / 0.26),
+      inset -3px -3px 7px rgb(255 255 255 / 0.18);
   }
+}
+
+/* ------------------------------------------------------------------
+   Hero entrance: CSS only, so the first paint never waits for
+   JavaScript. Only opacity and transform animate.
+   ------------------------------------------------------------------ */
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility hero-in {
+  animation: rise-in 0.7s var(--ease) both;
+  animation-delay: var(--delay, 0ms);
 }
 
 /* Motion is opt-out for anyone who asks for less of it. Motion for React
    handles its own transforms through <MotionConfig reducedMotion="user">;
-   this covers the CSS transitions (shadow states, theme icon, caret). */
+   this covers the CSS transitions and the hero entrance. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

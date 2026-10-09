@@ -3,7 +3,7 @@
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { AnimatePresence, m } from "motion/react";
 import { cn } from "@/lib/cn";
-import { surfaceVariants, transitions } from "@/lib/motion";
+import { toastVariants, transitions } from "@/lib/motion";
 import { neu } from "@/lib/neu";
 
 export type ToastStatus = "success" | "error";
@@ -19,13 +19,13 @@ export function Toast({ status, message }: ToastProps) {
   const Icon = isError ? AlertCircle : CheckCircle2;
 
   return (
-    <div className="pointer-events-none fixed inset-x-4 bottom-6 z-60 flex justify-center sm:bottom-8">
+    <div className="pointer-events-none fixed inset-x-4 bottom-24 z-60 flex justify-center md:bottom-8">
       <AnimatePresence>
         {status && (
           <m.div
             key={status}
             role={isError ? "alert" : "status"}
-            variants={surfaceVariants.toast}
+            variants={toastVariants}
             initial="hidden"
             animate="visible"
             exit="exit"

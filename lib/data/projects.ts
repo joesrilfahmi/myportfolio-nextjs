@@ -6,11 +6,14 @@ export interface Project {
   thumbnail?: string;
   description: string;
   stack: string[];
-  href: string;
-  githubHref: string;
+  /** Live demo or case study. Leave out until one exists. */
+  href?: string;
+  /** Source repository. */
+  githubHref?: string;
 }
 
 export const projectsContent = {
+  eyebrow: "Projects",
   title: "Selected Projects",
   description:
     "A few products I've built end to end, from schema to shipped interface.",
@@ -36,7 +39,6 @@ export const projects: Project[] = [
       "Google Maps API",
       "Google Cloud",
     ],
-    href: "#",
     githubHref: "https://github.com/yusrilfahmi/healthcare-mobile-platform",
   },
 ];

@@ -1,20 +1,12 @@
-"use client";
-
-import type {
-  ButtonHTMLAttributes,
-  MouseEvent,
-  MouseEventHandler,
-  ReactNode,
-} from "react";
-import { m } from "motion/react";
+import type { ButtonHTMLAttributes, MouseEventHandler, ReactNode } from "react";
 import { cn } from "@/lib/cn";
-import { interactions, transitions } from "@/lib/motion";
-import { isSectionHash, navigateToSection } from "@/lib/scroll";
 
 /* ------------------------------------------------------------------
    Action - renders a link when given an href, otherwise a button.
-   Button and IconButton share it, so external links, in-page section
-   links, default button type and press/hover motion live in one place.
+   Button and IconButton share it, so external-link handling and the
+   default button type live in one place. Hover lift and press depth are
+   CSS (see .neu-lift / .neu-press / .btn-primary), so this is a Server
+   Component unless the caller passes an onClick.
    ------------------------------------------------------------------ */
 
 interface ActionProps extends Pick<
@@ -30,8 +22,6 @@ interface ActionProps extends Pick<
   onClick?: MouseEventHandler<HTMLElement>;
   className?: string;
   children?: ReactNode;
-  /** Tap feedback; icon buttons press a little deeper. */
-  tap?: (typeof interactions)["buttonTap"];
 }
 
 function Action({
@@ -39,54 +29,30 @@ function Action({
   onClick,
   className,
   children,
-  tap = interactions.buttonTap,
-  disabled,
   type = "button",
   ...aria
 }: ActionProps) {
-  const motionProps = {
-    whileHover: disabled ? undefined : interactions.buttonHover,
-    whileTap: disabled ? undefined : tap,
-    transition: transitions.fast,
-  };
-
   if (href) {
     const isExternal = /^https?:\/\//.test(href);
-    const handleClick = (event: MouseEvent<HTMLElement>) => {
-      onClick?.(event);
-      // `#section` links scroll with the navbar offset instead of jumping.
-      if (isSectionHash(href) && !event.defaultPrevented) {
-        event.preventDefault();
-        navigateToSection(href);
-      }
-    };
 
     return (
-      <m.a
+      <a
         href={href}
-        onClick={handleClick}
+        onClick={onClick}
         target={isExternal ? "_blank" : undefined}
         rel={isExternal ? "noreferrer" : undefined}
         className={className}
         {...aria}
-        {...motionProps}
       >
         {children}
-      </m.a>
+      </a>
     );
   }
 
   return (
-    <m.button
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      className={className}
-      {...aria}
-      {...motionProps}
-    >
+    <button type={type} onClick={onClick} className={className} {...aria}>
       {children}
-    </m.button>
+    </button>
   );
 }
 
@@ -95,18 +61,19 @@ function Action({
    ------------------------------------------------------------------ */
 
 const buttonVariants = {
-  /** The main call to action: a blue key. */
+  /** The main call to action: an orange key. */
   primary: "btn-primary",
   /** Secondary: a raised surface that sinks in when pressed. */
-  raised: "neu neu-md neu-press text-foreground hover:text-primary-ink",
+  raised:
+    "neu neu-md neu-lift neu-press text-foreground hover:text-primary-ink",
   /** Tertiary: a recessed well that pops out on hover. */
   inset:
     "neu neu-md neu-well neu-pop neu-press text-muted hover:text-foreground",
 } as const;
 
 const buttonSizes = {
-  md: "px-7 py-3.5",
-  sm: "px-5 py-2.5",
+  md: "min-h-12 px-7 py-3.5",
+  sm: "min-h-11 px-5 py-2.5",
 } as const;
 
 interface ButtonProps extends ActionProps {
@@ -157,21 +124,18 @@ const iconSizes = {
   sm: "h-10 w-10",
 } as const;
 
-interface IconButtonProps extends Omit<ActionProps, "aria-label" | "tap"> {
+interface IconButtonProps extends Omit<ActionProps, "aria-label"> {
   /** Accessible name - required because there is no visible text. */
   label: string;
   size?: keyof typeof iconSizes;
-  /** Pressed / selected state: the surface stays sunken and blue. */
+  /** Pressed / selected state: the surface stays sunken and orange. */
   active?: boolean;
-  /** Use the primary text color instead of the default. */
-  accent?: boolean;
 }
 
 export function IconButton({
   label,
   size = "md",
   active = false,
-  accent = false,
   className,
   children,
   ...props
@@ -179,15 +143,12 @@ export function IconButton({
   return (
     <Action
       aria-label={label}
-      tap={interactions.iconTap}
       className={cn(
-        "neu neu-sm neu-press inline-flex shrink-0 items-center justify-center rounded-full text-sm select-none",
+        "neu neu-sm neu-lift neu-press inline-flex shrink-0 items-center justify-center rounded-full text-sm select-none",
         "disabled:pointer-events-none disabled:opacity-40",
         active
           ? "neu-well text-primary-ink"
-          : accent
-            ? "text-primary-ink"
-            : "text-foreground hover:text-primary-ink",
+          : "text-foreground hover:text-primary-ink",
         iconSizes[size],
         className,
       )}

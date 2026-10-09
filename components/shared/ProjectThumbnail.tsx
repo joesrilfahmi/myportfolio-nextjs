@@ -48,25 +48,34 @@ interface ProjectThumbnailProps {
   thumbnail?: string;
   /** Project title, used to describe the screenshot. */
   title: string;
+  /** Height and other sizing; defaults suit the compact card. */
+  className?: string;
+  /** Hint for next/image so it serves the right width. */
+  sizes?: string;
 }
 
 export function ProjectThumbnail({
   kind,
   thumbnail,
   title,
+  className = "h-48 sm:h-56",
+  sizes = "(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw",
 }: ProjectThumbnailProps) {
   return (
     <Card
       tone="inset"
       radius="2xl"
-      className="relative flex h-48 items-center justify-center overflow-hidden sm:h-56"
+      className={cn(
+        "neu-over relative flex items-center justify-center overflow-hidden",
+        className,
+      )}
     >
       {thumbnail ? (
         <Image
           src={thumbnail}
           alt={`${title} preview`}
           fill
-          sizes="(min-width: 768px) 400px, 100vw"
+          sizes={sizes}
           className="object-cover"
         />
       ) : (

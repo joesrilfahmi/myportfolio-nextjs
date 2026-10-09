@@ -1,22 +1,31 @@
-import { Mail } from "lucide-react";
+import { Code2, FolderKanban, House, Mail, UserRound } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import type { IconType } from "@/types/ui";
 
 export const personalInfo = {
   name: "Yusril Fahmi",
+  /** Two-letter monogram used by the wordmark. */
+  initials: "YF",
   username: "joesrilfahmi",
   role: ["Fullstack Developer", "Mobile Developer"],
   email: "joesrilfahmi@gmail.com",
 } as const;
 
-export const navLinks = [
-  { label: "Home", href: "#top" },
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  // { label: "Journey", href: "#journey" },
-  { label: "Contact", href: "#contact" },
-] as const;
+export interface NavLink {
+  label: string;
+  href: `#${string}`;
+  icon: IconType;
+  /** Rendered as a call-to-action button on desktop instead of a link. */
+  cta?: boolean;
+}
+
+export const navLinks: readonly NavLink[] = [
+  { label: "Home", href: "#top", icon: House },
+  { label: "About", href: "#about", icon: UserRound },
+  { label: "Skills", href: "#skills", icon: Code2 },
+  { label: "Projects", href: "#projects", icon: FolderKanban },
+  { label: "Contact", href: "#contact", icon: Mail, cta: true },
+];
 
 export interface SocialLink {
   label: string;

@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { m } from "motion/react";
+import { cn } from "@/lib/cn";
 import {
   VIEWPORT,
   revealVariants,
@@ -18,7 +19,11 @@ interface RevealProps {
   className?: string;
 }
 
-/** Scroll-triggered reveal. The single entrance animation used site-wide. */
+/**
+ * Scroll-triggered reveal. The single entrance animation used site-wide.
+ * `reveal-item` lets a <noscript> rule in the layout keep it visible when
+ * JavaScript is unavailable.
+ */
 export function Reveal({
   children,
   delay = 0,
@@ -27,7 +32,7 @@ export function Reveal({
 }: RevealProps) {
   return (
     <m.div
-      className={className}
+      className={cn("reveal-item", className)}
       variants={revealVariants[variant]}
       initial="hidden"
       whileInView="visible"
