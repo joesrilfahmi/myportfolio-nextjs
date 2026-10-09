@@ -14,18 +14,16 @@ export function Footer() {
 
           <nav aria-label="Footer">
             <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
-              {navLinks
-                .filter(({ href }) => href !== "#top")
-                .map(({ label, href }) => (
-                  <li key={href}>
-                    <a
-                      href={href}
-                      className="rounded transition-colors duration-300 hover:text-primary-ink"
-                    >
-                      {label}
-                    </a>
-                  </li>
-                ))}
+              {navLinks.map(({ label, href }) => (
+                <li key={href}>
+                  <a
+                    href={href}
+                    className="rounded transition-colors duration-300 hover:text-primary-ink"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </nav>
 

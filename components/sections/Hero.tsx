@@ -2,7 +2,6 @@ import { ArrowRight } from "lucide-react";
 import { heroContent } from "@/lib/data/hero";
 import { personalInfo } from "@/lib/data/shared";
 import { heroDelay } from "@/lib/motion";
-import { IdentityPanel } from "../shared/IdentityPanel";
 import { Button } from "../ui/Button";
 import { Section } from "../ui/Section";
 import { Eyebrow } from "../ui/SectionHeading";
@@ -15,9 +14,9 @@ export function Hero() {
   const { greeting, headline, summary } = heroContent;
 
   return (
-    <Section id="top" titleId="hero-title" spacing="hero">
-      <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
-        <div className="lg:col-span-7">
+    <Section id="top" titleId="hero-title" spacing="hero" className="lg:px-0">
+      <div className="flex items-center">
+        <div>
           <Eyebrow className="hero-in">
             {greeting} {personalInfo.name}
           </Eyebrow>
@@ -52,10 +51,6 @@ export function Hero() {
             </Button>
             <Button href="#contact">Contact Me</Button>
           </div>
-        </div>
-
-        <div style={heroDelay(200)} className="hero-in lg:col-span-5 lg:mt-10">
-          <IdentityPanel />
         </div>
       </div>
     </Section>

@@ -1,16 +1,16 @@
 import { personalInfo } from "@/lib/data/shared";
 import { Card } from "../ui/Card";
 import { ChipList } from "../ui/Chip";
-import { HeroPortrait } from "./HeroPortrait";
-import { SocialLinks } from "./SocialLinks";
+import { HeroPortrait } from "../shared/HeroPortrait";
+import { SocialLinks } from "../shared/SocialLinks";
 
-/** The developer identity panel beside the hero headline. */
-export function IdentityPanel() {
+/** Persistent profile card shown beside the page content on larger screens. */
+export function HeroCard() {
   return (
     <Card
       radius="4xl"
       depth="lg"
-      className="mx-auto flex w-full max-w-sm flex-col items-center p-6 text-center sm:p-8 lg:mr-0 lg:ml-auto"
+      className="mx-auto flex min-h-[34rem] w-full max-w-sm flex-col items-center justify-center p-8 text-center lg:min-h-0 lg:max-w-none"
     >
       <HeroPortrait />
 

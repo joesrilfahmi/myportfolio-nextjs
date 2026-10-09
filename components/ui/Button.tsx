@@ -62,7 +62,7 @@ function Action({
 
 const buttonVariants = {
   /** The main call to action: an orange key. */
-  primary: "btn-primary",
+  primary: "btn-primary text-white",
   /** Secondary: a raised surface that sinks in when pressed. */
   raised:
     "neu neu-md neu-lift neu-press text-foreground hover:text-primary-ink",

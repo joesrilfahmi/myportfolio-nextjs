@@ -39,6 +39,7 @@ export const projects: Project[] = [
       "Google Maps API",
       "Google Cloud",
     ],
+    href: "https://github.com/yusrilfahmi/healthcare-mobile-platform",
     githubHref: "https://github.com/yusrilfahmi/healthcare-mobile-platform",
   },
 ];
