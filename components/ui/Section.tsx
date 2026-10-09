@@ -29,7 +29,7 @@ export function Section({
       id={id}
       aria-labelledby={titleId}
       className={cn(
-        "mx-auto w-full max-w-6xl scroll-mt-24 px-5 sm:px-8",
+        "mx-auto w-full max-w-6xl scroll-mt-24",
         spacings[spacing],
         className,
       )}

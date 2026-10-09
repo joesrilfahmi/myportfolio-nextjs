@@ -6,10 +6,6 @@ import { Button } from "../ui/Button";
 import { Section } from "../ui/Section";
 import { Eyebrow } from "../ui/SectionHeading";
 
-/**
- * Server Component with a CSS-only entrance (`hero-in`), so the first
- * paint never waits for JavaScript.
- */
 export function Hero() {
   const { greeting, headline, summary } = heroContent;
 

@@ -7,7 +7,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mx-auto w-full max-w-6xl px-5 pb-28 sm:px-8 md:pb-12">
+    <footer className="mx-auto w-full max-w-6xl pb-28 md:pb-12">
       <div className="border-t border-border pt-10">
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <Wordmark />
