@@ -16,18 +16,18 @@ export default function OpenGraphImage() {
         flexDirection: "column",
         justifyContent: "center",
         padding: 96,
-        background: "#27221e",
-        color: "#f1e9e2",
-        borderLeft: "24px solid #d65400",
+        background: "#292729",
+        color: "#f1eae8",
+        borderLeft: "24px solid #e85d52",
       }}
     >
-      <div style={{ fontSize: 34, color: "#ff8c4a", fontWeight: 600 }}>
+      <div style={{ fontSize: 34, color: "#ff9389", fontWeight: 600 }}>
         Portfolio
       </div>
       <div style={{ fontSize: 96, fontWeight: 700, marginTop: 16 }}>
         {siteConfig.name}
       </div>
-      <div style={{ fontSize: 42, color: "#b3a79c", marginTop: 20 }}>
+      <div style={{ fontSize: 42, color: "#b5a9a6", marginTop: 20 }}>
         Fullstack &amp; Mobile Developer
       </div>
     </div>,

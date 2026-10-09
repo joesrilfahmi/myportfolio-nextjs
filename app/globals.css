@@ -17,15 +17,18 @@
 }
 
 /* ------------------------------------------------------------------
-   Design tokens - Soft UI Neumorphism (cool gray + red accent)
+   Design tokens - Refined Neumorphism (cool gray + red accent)
 
-   Palette taken from the "Neumorphic Soft UI" reference:
-   light = cool blue-gray base, dark = neutral charcoal,
-   accent = vivid red (#ff3b30) like the heart button.
+   Light = cool blue-gray base, dark = neutral charcoal, accent = red.
 
    Neumorphism needs the page and its surfaces to share one colour,
    so background / surface / raised / inset are the same base; depth
    comes from a faint gradient and paired shadows.
+
+   Depth is a step firmer than the soft preset: the dark shadow is
+   stronger, the light highlight is pure white (light) or lifted
+   (dark), and wells are deeper. Distances stay moderate so the
+   result reads as elegant rather than heavy.
 
    Contrast (WCAG), measured on the base and both gradient ends:
      foreground  >= 11:1       muted       >= 5:1
@@ -40,16 +43,16 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   /* Cool blue-gray base */
-  --background: #eceff4;
-  --surface: #eceff4;
-  --surface-raised: #eceff4;
-  --surface-inset: #eceff4;
-  --surface-from: #f4f6fa;
-  --surface-to: #e3e7ee;
+  --background: #e8ecf2;
+  --surface: #e8ecf2;
+  --surface-raised: #e8ecf2;
+  --surface-inset: #e8ecf2;
+  --surface-from: #f3f6fa;
+  --surface-to: #dde2ea;
 
   /* Text */
-  --foreground: #2b3140;
-  --muted: #5d6577;
+  --foreground: #232937;
+  --muted: #566074;
   --border: color-mix(in srgb, var(--foreground) 12%, transparent);
 
   /* Red identity */
@@ -63,28 +66,28 @@
 
   --danger: #b3261e;
 
-  /* Shadows: cool blue-gray dark + white highlight */
-  --shadow-dark: rgb(163 177 198 / 0.6);
-  --shadow-dark-inset: rgb(163 177 198 / 0.7);
-  --shadow-light: rgb(255 255 255 / 0.9);
-  --edge-light: rgb(255 255 255 / 0.7);
-  --edge-dark: rgb(163 177 198 / 0.25);
+  /* Shadows: cool slate dark + pure white highlight */
+  --shadow-dark: rgb(150 164 188 / 0.78);
+  --shadow-dark-inset: rgb(150 164 188 / 0.9);
+  --shadow-light: rgb(255 255 255 / 1);
+  --edge-light: rgb(255 255 255 / 0.85);
+  --edge-dark: rgb(150 164 188 / 0.35);
 
-  /* Primary button depth (red glow like the heart button) */
-  --primary-shadow-dark: rgb(214 40 30 / 0.4);
-  --primary-shadow-light: rgb(255 255 255 / 0.8);
+  /* Primary button depth (red glow) */
+  --primary-shadow-dark: rgb(214 40 30 / 0.45);
+  --primary-shadow-light: rgb(255 255 255 / 0.9);
 }
 
 .dark {
   color-scheme: dark;
 
   /* Neutral charcoal */
-  --background: #28292d;
-  --surface: #28292d;
-  --surface-raised: #28292d;
-  --surface-inset: #28292d;
+  --background: #26272b;
+  --surface: #26272b;
+  --surface-raised: #26272b;
+  --surface-inset: #26272b;
   --surface-from: #2e2f34;
-  --surface-to: #232427;
+  --surface-to: #1f2023;
 
   --foreground: #eceef2;
   --muted: #a0a5b0;
@@ -99,14 +102,15 @@
 
   --danger: #ff8a80;
 
-  --shadow-dark: rgb(14 15 17 / 0.75);
-  --shadow-dark-inset: rgb(14 15 17 / 0.85);
-  --shadow-light: rgb(72 74 82 / 0.4);
-  --edge-light: rgb(110 113 122 / 0.16);
-  --edge-dark: rgb(10 11 13 / 0.5);
+  /* Deeper black shadow, lifted gray highlight */
+  --shadow-dark: rgb(8 9 11 / 0.9);
+  --shadow-dark-inset: rgb(8 9 11 / 0.95);
+  --shadow-light: rgb(84 87 96 / 0.55);
+  --edge-light: rgb(130 134 144 / 0.22);
+  --edge-dark: rgb(6 7 9 / 0.6);
 
-  --primary-shadow-dark: rgb(8 8 10 / 0.6);
-  --primary-shadow-light: rgb(255 90 80 / 0.14);
+  --primary-shadow-dark: rgb(6 6 8 / 0.7);
+  --primary-shadow-light: rgb(255 90 80 / 0.18);
 }
 
 /* Expose the tokens as Tailwind utilities (bg-surface, text-primary-ink...) */
@@ -207,8 +211,9 @@
    transition cannot do between outer and inset shadows.
 
    Raised = 1px edge highlights + a dark/light pair at --d / --b.
-   Wells  = the same pair, inset, at half the distance and blur.
-   The shadows are deliberately soft: 10px / 20px is the preset.
+   Wells  = the same pair, inset, at 0.55x the distance and blur.
+   Preset is 12px / 24px: firm enough to read clearly, restrained
+   enough to stay professional.
 
    Modifiers
      depth   .neu-sm | .neu-md (preset) | .neu-lg
@@ -221,8 +226,8 @@
 
 @layer components {
   .neu {
-    --d: 10px;
-    --b: 20px;
+    --d: 12px;
+    --b: 24px;
     --raised: 1;
     --inset: 0;
 
@@ -263,29 +268,29 @@
         calc(var(--b) * var(--elev)) var(--shadow-light);
   }
 
-  /* Inset layer: half the raised distance and blur. */
+  /* Inset layer: 0.55x the raised distance and blur. */
   .neu::after {
     opacity: var(--inset);
     box-shadow:
-      inset calc(var(--d) * 0.5 * var(--elev))
-        calc(var(--d) * 0.5 * var(--elev)) calc(var(--b) * 0.5 * var(--elev))
+      inset calc(var(--d) * 0.55 * var(--elev))
+        calc(var(--d) * 0.55 * var(--elev)) calc(var(--b) * 0.55 * var(--elev))
         var(--shadow-dark-inset),
-      inset calc(var(--d) * -0.5 * var(--elev))
-        calc(var(--d) * -0.5 * var(--elev)) calc(var(--b) * 0.5 * var(--elev))
+      inset calc(var(--d) * -0.55 * var(--elev))
+        calc(var(--d) * -0.55 * var(--elev)) calc(var(--b) * 0.55 * var(--elev))
         var(--shadow-light);
   }
 
   .neu-sm {
-    --d: 4px;
-    --b: 8px;
+    --d: 5px;
+    --b: 10px;
   }
   .neu-md {
-    --d: 10px;
-    --b: 20px;
+    --d: 12px;
+    --b: 24px;
   }
   .neu-lg {
-    --d: 16px;
-    --b: 32px;
+    --d: 18px;
+    --b: 36px;
   }
 
   /* Wells are always flat: a gradient would clash with the inset shading. */
@@ -322,10 +327,10 @@
     background-color: var(--primary);
     border: 1px solid color-mix(in srgb, var(--primary) 70%, white);
     box-shadow:
-      5px 5px 10px var(--primary-shadow-dark),
-      -5px -5px 10px var(--primary-shadow-light),
-      inset 1px 1px 2px rgb(255 255 255 / 0.3),
-      inset -2px -2px 4px rgb(0 0 0 / 0.12);
+      6px 6px 12px var(--primary-shadow-dark),
+      -6px -6px 12px var(--primary-shadow-light),
+      inset 1px 1px 2px rgb(255 255 255 / 0.32),
+      inset -2px -2px 4px rgb(0 0 0 / 0.14);
     transition:
       background-color 0.3s var(--ease),
       box-shadow 0.45s var(--ease),
@@ -336,18 +341,18 @@
       background-color: var(--primary-hover);
       transform: translateY(-2px);
       box-shadow:
-        7px 7px 14px var(--primary-shadow-dark),
-        -7px -7px 14px var(--primary-shadow-light),
-        inset 1px 1px 2px rgb(255 255 255 / 0.34),
-        inset -2px -2px 4px rgb(0 0 0 / 0.12);
+        8px 8px 16px var(--primary-shadow-dark),
+        -8px -8px 16px var(--primary-shadow-light),
+        inset 1px 1px 2px rgb(255 255 255 / 0.36),
+        inset -2px -2px 4px rgb(0 0 0 / 0.14);
     }
   }
   .btn-primary:active:not(:disabled) {
     background-color: var(--primary-active);
     transform: translateY(0);
     box-shadow:
-      inset 4px 4px 8px rgb(0 0 0 / 0.26),
-      inset -3px -3px 7px rgb(255 255 255 / 0.18);
+      inset 4px 4px 8px rgb(0 0 0 / 0.28),
+      inset -3px -3px 7px rgb(255 255 255 / 0.2);
   }
 }
 
