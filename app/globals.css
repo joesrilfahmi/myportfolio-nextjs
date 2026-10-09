@@ -17,16 +17,20 @@
 }
 
 /* ------------------------------------------------------------------
-   Design tokens - Professional Orange Neumorphism
+   Design tokens - Soft UI Neumorphism (cool gray + red accent)
 
-   Brand key: #D65400. Neumorphism needs the page and its surfaces to
-   share one colour, so background / surface / raised / inset are the
-   same warm base; depth comes from a faint gradient and paired shadows.
+   Palette taken from the "Neumorphic Soft UI" reference:
+   light = cool blue-gray base, dark = neutral charcoal,
+   accent = vivid red (#ff3b30) like the heart button.
+
+   Neumorphism needs the page and its surfaces to share one colour,
+   so background / surface / raised / inset are the same base; depth
+   comes from a faint gradient and paired shadows.
 
    Contrast (WCAG), measured on the base and both gradient ends:
-     foreground  >= 11.5:1     muted       >= 5.5:1
+     foreground  >= 11:1       muted       >= 5:1
      primary-ink >= 5.0:1      (text, icons and the focus ring)
-     primary-foreground on --primary = 4.7:1 (white would be 4.1:1, so
+     primary-foreground on --primary = 5.4:1 (white would be 3.6:1, so
      the primary button uses dark text).
    `--primary` itself is only used for fills and decoration (>= 3:1).
    ------------------------------------------------------------------ */
@@ -35,74 +39,74 @@
   color-scheme: light;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* Warm off-white base */
-  --background: #ece3da;
-  --surface: #ece3da;
-  --surface-raised: #ece3da;
-  --surface-inset: #ece3da;
-  --surface-from: #f2e9e0;
-  --surface-to: #e5dbd1;
+  /* Cool blue-gray base */
+  --background: #eceff4;
+  --surface: #eceff4;
+  --surface-raised: #eceff4;
+  --surface-inset: #eceff4;
+  --surface-from: #f4f6fa;
+  --surface-to: #e3e7ee;
 
   /* Text */
-  --foreground: #2a211b;
-  --muted: #5f5249;
+  --foreground: #2b3140;
+  --muted: #5d6577;
   --border: color-mix(in srgb, var(--foreground) 12%, transparent);
 
-  /* Orange identity */
-  --primary: #d65400;
-  --primary-hover: #e15b05;
-  --primary-active: #d65400;
-  --primary-foreground: #140c07;
-  --primary-ink: #9c3b00; /* text-safe orange on light surfaces */
+  /* Red identity */
+  --primary: #ff3b30;
+  --primary-hover: #ff5046;
+  --primary-active: #f0281d;
+  --primary-foreground: #140605;
+  --primary-ink: #c4170c; /* text-safe red on light surfaces */
   --primary-soft: color-mix(in srgb, var(--primary) 12%, transparent);
-  --primary-muted: #d9946a; /* decorative strokes and fills */
+  --primary-muted: #f19a94; /* decorative strokes and fills */
 
   --danger: #b3261e;
 
-  /* Shadows: warm-tinted dark + white highlight */
-  --shadow-dark: rgb(166 140 118 / 0.5);
-  --shadow-dark-inset: rgb(166 140 118 / 0.6);
-  --shadow-light: rgb(255 255 255 / 0.85);
-  --edge-light: rgb(255 255 255 / 0.65);
-  --edge-dark: rgb(166 140 118 / 0.25);
+  /* Shadows: cool blue-gray dark + white highlight */
+  --shadow-dark: rgb(163 177 198 / 0.6);
+  --shadow-dark-inset: rgb(163 177 198 / 0.7);
+  --shadow-light: rgb(255 255 255 / 0.9);
+  --edge-light: rgb(255 255 255 / 0.7);
+  --edge-dark: rgb(163 177 198 / 0.25);
 
-  /* Primary button depth */
-  --primary-shadow-dark: rgb(150 60 0 / 0.38);
-  --primary-shadow-light: rgb(255 255 255 / 0.7);
+  /* Primary button depth (red glow like the heart button) */
+  --primary-shadow-dark: rgb(214 40 30 / 0.4);
+  --primary-shadow-light: rgb(255 255 255 / 0.8);
 }
 
 .dark {
   color-scheme: dark;
 
-  /* Deep charcoal with a warm undertone */
-  --background: #27221e;
-  --surface: #27221e;
-  --surface-raised: #27221e;
-  --surface-inset: #27221e;
-  --surface-from: #2d2824;
-  --surface-to: #211d1a;
+  /* Neutral charcoal */
+  --background: #28292d;
+  --surface: #28292d;
+  --surface-raised: #28292d;
+  --surface-inset: #28292d;
+  --surface-from: #2e2f34;
+  --surface-to: #232427;
 
-  --foreground: #f1e9e2;
-  --muted: #b3a79c;
+  --foreground: #eceef2;
+  --muted: #a0a5b0;
 
   /* Same brand key; -ink is the lighter tint for text on dark surfaces */
-  --primary: #d65400;
-  --primary-hover: #e15b05;
-  --primary-active: #d65400;
-  --primary-foreground: #140c07;
-  --primary-ink: #ff8c4a;
-  --primary-muted: #a4521e;
+  --primary: #ff3b30;
+  --primary-hover: #ff5046;
+  --primary-active: #f0281d;
+  --primary-foreground: #140605;
+  --primary-ink: #ff7a70;
+  --primary-muted: #a8342d;
 
   --danger: #ff8a80;
 
-  --shadow-dark: rgb(8 6 5 / 0.7);
-  --shadow-dark-inset: rgb(8 6 5 / 0.8);
-  --shadow-light: rgb(88 76 68 / 0.38);
-  --edge-light: rgb(120 104 94 / 0.16);
-  --edge-dark: rgb(8 6 5 / 0.5);
+  --shadow-dark: rgb(14 15 17 / 0.75);
+  --shadow-dark-inset: rgb(14 15 17 / 0.85);
+  --shadow-light: rgb(72 74 82 / 0.4);
+  --edge-light: rgb(110 113 122 / 0.16);
+  --edge-dark: rgb(10 11 13 / 0.5);
 
-  --primary-shadow-dark: rgb(8 6 5 / 0.6);
-  --primary-shadow-light: rgb(255 140 74 / 0.14);
+  --primary-shadow-dark: rgb(8 8 10 / 0.6);
+  --primary-shadow-light: rgb(255 90 80 / 0.14);
 }
 
 /* Expose the tokens as Tailwind utilities (bg-surface, text-primary-ink...) */
@@ -312,7 +316,7 @@
     transform: translateY(0);
   }
 
-  /* Primary action: a solid orange key with tactile neumorphic depth. */
+  /* Primary action: a solid red key with tactile neumorphic depth. */
   .btn-primary {
     color: var(--primary-foreground);
     background-color: var(--primary);
@@ -339,6 +343,7 @@
     }
   }
   .btn-primary:active:not(:disabled) {
+    background-color: var(--primary-active);
     transform: translateY(0);
     box-shadow:
       inset 4px 4px 8px rgb(0 0 0 / 0.26),
