@@ -1,4 +1,11 @@
-import { Code2, FolderKanban, House, Mail, UserRound } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  Code2,
+  FolderKanban,
+  House,
+  Mail,
+  UserRound,
+} from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import type { IconType } from "@/types/ui";
 
@@ -22,6 +29,7 @@ export interface NavLink {
 export const navLinks: readonly NavLink[] = [
   { label: "Home", href: "#top", icon: House },
   { label: "About", href: "#about", icon: UserRound },
+  { label: "Journey", href: "#journey", icon: BriefcaseBusiness },
   { label: "Skills", href: "#skills", icon: Code2 },
   { label: "Projects", href: "#projects", icon: FolderKanban },
   { label: "Contact", href: "#contact", icon: Mail, cta: true },

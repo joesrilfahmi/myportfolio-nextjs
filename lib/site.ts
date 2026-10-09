@@ -6,8 +6,8 @@ export const siteConfig = {
   name: personalInfo.name,
   title: `${personalInfo.name} | Portfolio`,
   shortDescription:
-    "Building practical, maintainable web and mobile applications with modern technologies.",
-  description: `Portfolio of ${personalInfo.name}, a ${role} building practical, maintainable web and mobile applications with Next.js, Laravel, and Flutter.`,
+    "Fullstack and mobile developer working with Next.js, Laravel, and Flutter.",
+  description: `Portfolio of ${personalInfo.name}, a ${role} who builds web and mobile applications with Next.js, Laravel, and Flutter.`,
   keywords: [
     personalInfo.name,
     "Fullstack Developer",

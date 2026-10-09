@@ -25,7 +25,7 @@ export function Navbar() {
   };
 
   return (
-    <header className="fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 lg:sticky lg:top-1/2 lg:bottom-auto lg:h-fit lg:translate-y-[-50%] lg:self-start lg:px-0">
+    <header className="fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 max-[359px]:px-2 lg:sticky lg:top-1/2 lg:bottom-auto lg:h-fit lg:translate-y-[-50%] lg:self-start lg:px-0">
       <Card
         radius="full"
         depth="md"
@@ -39,7 +39,7 @@ export function Navbar() {
               return (
                 <li
                   key={href}
-                  className={cn(href === "#top" && "max-[359px]:hidden")}
+                  className={cn(href === "#top" && "max-[399px]:hidden")}
                 >
                   <a
                     href={href}
@@ -48,7 +48,7 @@ export function Navbar() {
                     title={label}
                     aria-label={label}
                     className={cn(
-                      "group relative inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-300 ease-neu",
+                      "group relative inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-300 ease-neu max-[359px]:h-10 max-[359px]:w-10",
                       isActive
                         ? "text-primary-ink"
                         : "text-muted hover:text-primary-ink",

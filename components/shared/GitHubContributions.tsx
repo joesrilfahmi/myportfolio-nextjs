@@ -1,7 +1,7 @@
 import { getGitHubContributions } from "@/lib/github-contributions";
 import { Card } from "../ui/Card";
 
-/** From no activity (neutral) to the busiest days (full orange). */
+/** From no activity (neutral) to the busiest days (full accent). */
 const contributionColors = [
   "bg-foreground/10",
   "bg-primary/35",

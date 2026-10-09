@@ -11,7 +11,7 @@ export const aboutContent = {
   eyebrow: "About",
   title: "About Me",
   paragraph:
-    "I work across the full stack — designing APIs, structuring databases, and shipping the interfaces people actually use. On the mobile side, I build Flutter applications that share logic and feel consistent across platforms. Most of my time goes into keeping systems easy to extend, not just easy to launch.",
+    "I work across the full stack. I design APIs and structure databases, then build the interfaces on top of them. On mobile, I write Flutter apps that share logic and feel consistent across platforms. I spend most of my time keeping systems easy to extend.",
 } as const;
 
 export const aboutHighlights: readonly AboutHighlight[] = [
@@ -20,6 +20,6 @@ export const aboutHighlights: readonly AboutHighlight[] = [
   {
     icon: Compass,
     label: "Approach",
-    value: "Practical · Structured · Iterative",
+    value: "Structured · Iterative",
   },
 ];

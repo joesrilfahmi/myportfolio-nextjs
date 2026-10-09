@@ -77,7 +77,7 @@ export function ContactForm() {
             minLength={10}
             maxLength={5000}
             rows={4}
-            placeholder="What are you looking to build?"
+            placeholder="Describe what you want to build"
             value={values.message}
             onChange={handleChange}
           />

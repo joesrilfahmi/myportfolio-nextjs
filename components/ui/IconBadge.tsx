@@ -13,7 +13,7 @@ interface IconBadgeProps {
   className?: string;
 }
 
-/** An orange glyph sitting in a small recessed circle. */
+/** An accent glyph sitting in a small recessed circle. */
 export function IconBadge({
   icon: Icon,
   size = "md",

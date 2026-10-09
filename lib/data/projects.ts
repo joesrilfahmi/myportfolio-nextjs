@@ -17,9 +17,9 @@ export const projectsContent = {
   title: "Selected Projects",
   description:
     "A few products I've built end to end, from schema to shipped interface.",
-  emptyTitle: "Projects are on the way",
+  emptyTitle: "No projects listed yet",
   emptyDescription:
-    "New case studies are being written up. Until then, the code lives on GitHub.",
+    "I'm writing up new case studies. Until they're ready, my code is on GitHub.",
 } as const;
 
 export const projects: Project[] = [
@@ -30,7 +30,7 @@ export const projects: Project[] = [
     kind: "mobile",
     thumbnail: "/images/project/contoh.jpg",
     description:
-      "A mobile application designed to simplify access to hospital services — booking appointments, viewing lab results, and messaging care staff from one place.",
+      "A mobile app that gives patients one place to book appointments, view lab results, and message care staff.",
     stack: [
       "Flutter",
       "Dart",

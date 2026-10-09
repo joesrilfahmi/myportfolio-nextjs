@@ -61,7 +61,7 @@ function Action({
    ------------------------------------------------------------------ */
 
 const buttonVariants = {
-  /** The main call to action: an orange key. */
+  /** The main call to action: a blue-violet gradient key. */
   primary: "btn-primary text-white",
   /** Secondary: a raised surface that sinks in when pressed. */
   raised:
@@ -128,7 +128,7 @@ interface IconButtonProps extends Omit<ActionProps, "aria-label"> {
   /** Accessible name - required because there is no visible text. */
   label: string;
   size?: keyof typeof iconSizes;
-  /** Pressed / selected state: the surface stays sunken and orange. */
+  /** Pressed / selected state: the surface stays sunken and accented. */
   active?: boolean;
 }
 

@@ -41,7 +41,7 @@ export function SectionHeading({
   );
 }
 
-/** A short orange rule followed by an uppercase label. */
+/** A short gradient rule followed by an uppercase label. */
 export function Eyebrow({
   children,
   className,
@@ -52,11 +52,14 @@ export function Eyebrow({
   return (
     <p
       className={cn(
-        "flex items-center gap-3 text-xs font-semibold tracking-[0.18em] text-primary uppercase",
+        "flex items-center gap-3 text-xs font-semibold tracking-[0.18em] text-primary-ink uppercase",
         className,
       )}
     >
-      <span aria-hidden="true" className="h-0.5 w-8 rounded-full bg-primary" />
+      <span
+        aria-hidden="true"
+        className="h-0.5 w-8 rounded-full bg-gradient-brand"
+      />
       {children}
     </p>
   );

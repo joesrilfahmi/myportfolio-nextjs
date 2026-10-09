@@ -1,24 +1,25 @@
-# Yusril Fahmi — Portfolio
+# Yusril Fahmi: Portfolio
 
 Personal developer portfolio built with **Next.js (App Router)**, **React 19**,
-**TypeScript (strict)**, **Tailwind CSS v4** and **Motion**. The design is a
-soft, professional **orange neumorphism** (`#D65400`) with a full light and
-dark theme.
+**TypeScript (strict)**, **Tailwind CSS v4** and **Motion**. The design uses
+soft neumorphism with a Gemini-inspired **blue → indigo → violet** gradient
+accent. The light theme uses a cool blue-gray base and the dark theme uses
+Tailwind zinc-900 (`#18181b`).
 
 ## Features
 
-- Orange neumorphic design system driven by CSS design tokens, light and dark.
-- Theme follows the OS until the visitor chooses; the choice persists and is
-  applied before first paint, so there is no wrong-theme flash.
+- Neumorphic design system driven by CSS design tokens, light and dark.
+- The theme follows the OS until the visitor picks one. The choice persists and
+  loads before first paint, so the wrong theme never flashes.
 - Floating navigation with an active-section indicator (top pill on desktop,
   bottom dock on mobile).
-- Server Components by default; client JavaScript only where it is needed
-  (navigation, theme, scroll reveals, contact form).
+- Server Components by default. Client JavaScript runs only in the navigation,
+  theme toggle, scroll reveals, and contact form.
 - CSS-only hero entrance, Motion scroll reveals, and full `prefers-reduced-motion`
   support. Content stays visible without JavaScript.
 - Contact form with validation, honeypot, rate limiting and delivery to
-  Telegram (server-side) and email (EmailJS). It reports an error instead of
-  pretending to succeed when delivery is not configured.
+  Telegram (server-side) and email (EmailJS). When delivery is not configured,
+  it shows an error instead of reporting success.
 - Optional GitHub contribution calendar (server-side, cached for one hour).
 - SEO: metadata, Open Graph / Twitter images, canonical URL, `robots.txt`,
   `sitemap.xml`, generated icons.
@@ -60,9 +61,9 @@ npm run dev        # http://localhost:3000
 
 ## Environment variables
 
-Copy `.env.example` to `.env.local` and fill in what you need. Everything is
-read on the server only. The site runs without any of them; the features below
-simply stay off.
+Copy `.env.example` to `.env.local` and fill in what you need. The server reads
+every variable. The site runs without any of them, and the features below stay
+off.
 
 | Variable                                                                         | Enables                                |
 | -------------------------------------------------------------------------------- | -------------------------------------- |
@@ -71,11 +72,11 @@ simply stay off.
 | `GITHUB_TOKEN`, `GITHUB_USERNAME`                                                | GitHub contribution calendar           |
 | `NEXT_PUBLIC_SITE_URL`                                                           | Canonical URL for Open Graph / sitemap |
 
-The `VITE_` prefix is kept from the original project so existing environments
-keep working; these values are never exposed to the browser except the EmailJS
-public key, which EmailJS designs to be public. Set `NEXT_PUBLIC_SITE_URL`
-(e.g. `https://your-domain.com`) in production; on Vercel the production URL
-is used as a fallback.
+The `VITE_` prefix comes from the original project, so existing environments
+keep working. The browser sees none of these values except the EmailJS public
+key, which EmailJS meant to be public. Set `NEXT_PUBLIC_SITE_URL`
+(for example `https://your-domain.com`) in production. On Vercel, the
+production URL is the fallback.
 
 ## Project structure
 
@@ -85,7 +86,7 @@ app/                  routes, layout, metadata files, global CSS (design tokens)
   fonts/              self-hosted variable fonts (+ licences)
 components/
   layout/             Navbar, Footer, Wordmark
-  sections/           Hero, About, Skills, Projects, Contact
+  sections/           Hero, About, Journey, Skills, Projects, Contact
   shared/             feature components used by sections
   ui/                 primitives: Card, Button, Chip, Field, Toast…
   motion/             Reveal (scroll-triggered entrance)
@@ -103,6 +104,8 @@ Everything on the page is data in `lib/data/*`:
 - `projects.ts`: add a project and it renders. The first one is featured at
   full width; the rest appear in a grid. `href` (live demo) and `githubHref`
   are optional, and buttons only appear for links that exist.
+- `journey.ts`: the career timeline, newest first. `role` and `summary` are
+  optional and render when you add them.
 - `skills.ts`: technology groups and their icons.
 - `about.ts`, `hero.ts`, `contact.ts`, `shared.ts`: copy, navigation and
   social links.
@@ -116,9 +119,10 @@ Project preview images go in `public/images/project/`. The current
   `muted`, `border`, `primary` (+ `-hover`, `-ink`, `-soft`, `-muted`,
   `-foreground`) and the shadow pair. Tailwind exposes them as utilities
   (`bg-surface`, `text-primary-ink`). Change the brand colour in one place.
-- **Contrast**: `#D65400` is used for fills and large text. White on it is
-  4.1:1, so the primary button uses dark text (4.7:1). Orange _text_ and icons
-  on surfaces use `primary-ink` (≥ 5:1 in both themes).
+- **Gradients**: `--gradient-brand` (decoration), `--gradient-button` (white
+  text, every stop ≥ 4.5:1) and `--gradient-text` (large headings only, via
+  the `text-gradient` utility). `--primary` is for fills; text and icons on
+  surfaces use `primary-ink` (≥ 5:1 in both themes).
 - **Neumorphism**: `Card` (`tone="raised" | "inset"`, `depth`, `radius`,
   `interactive`), `Button` (`primary | raised | inset`), `IconButton`, and the
   field components. Shadow depth is controlled by the `--elev` variable.

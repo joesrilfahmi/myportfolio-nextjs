@@ -23,7 +23,7 @@ export function Hero() {
             className="mt-6 hero-in font-display text-display font-bold text-foreground"
           >
             {headline.before}{" "}
-            <span className="text-primary">{headline.emphasis}</span>{" "}
+            <span className="text-gradient">{headline.emphasis}</span>{" "}
             {headline.after}
           </h1>
 

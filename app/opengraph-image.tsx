@@ -16,18 +16,29 @@ export default function OpenGraphImage() {
         flexDirection: "column",
         justifyContent: "center",
         padding: 96,
-        background: "#292729",
-        color: "#f1eae8",
-        borderLeft: "24px solid #e85d52",
+        position: "relative",
+        background: "linear-gradient(135deg, #18181b 0%, #27272a 100%)",
+        color: "#fafafa",
       }}
     >
-      <div style={{ fontSize: 34, color: "#ff9389", fontWeight: 600 }}>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          left: 0,
+          width: 24,
+          background:
+            "linear-gradient(180deg, #4285f4 0%, #6366f1 50%, #8b5cf6 100%)",
+        }}
+      />
+      <div style={{ fontSize: 34, color: "#8ab4f8", fontWeight: 600 }}>
         Portfolio
       </div>
       <div style={{ fontSize: 96, fontWeight: 700, marginTop: 16 }}>
         {siteConfig.name}
       </div>
-      <div style={{ fontSize: 42, color: "#b5a9a6", marginTop: 20 }}>
+      <div style={{ fontSize: 42, color: "#a1a1aa", marginTop: 20 }}>
         Fullstack &amp; Mobile Developer
       </div>
     </div>,

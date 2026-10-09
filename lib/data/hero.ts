@@ -3,8 +3,8 @@ export const heroContent = {
   headline: {
     before: "Building",
     emphasis: "practical",
-    after: "digital experiences.",
+    after: "web and mobile apps.",
   },
   summary:
-    "I build practical web and mobile applications with modern technologies and maintainable architecture.",
+    "I use Next.js and Laravel for the web and Flutter for mobile, and I structure the code so the next feature is easy to add.",
 } as const;

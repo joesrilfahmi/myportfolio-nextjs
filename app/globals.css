@@ -17,25 +17,24 @@
 }
 
 /* ------------------------------------------------------------------
-   Design tokens - Refined Neumorphism (cool gray + red accent)
+   Design tokens - Professional Neumorphism (Gemini-inspired blue-violet)
 
-   Light = cool blue-gray base, dark = neutral charcoal, accent = red.
+   Light = cool blue-gray base, dark = Tailwind zinc-900, accent = a
+   blue -> indigo -> violet gradient.
 
-   Neumorphism needs the page and its surfaces to share one colour,
-   so background / surface / raised / inset are the same base; depth
-   comes from a faint gradient and paired shadows.
+   Neumorphism needs the page and its surfaces to share one colour, so
+   background / surface / inset are the same base. Depth comes from a
+   faint convex gradient and a paired shadow: a dark one toward the
+   bottom-right, a light one toward the top-left. The base sits in the
+   middle of the tonal range on purpose: a near-white base leaves no room
+   for a white highlight, and a near-black base none for a black shadow.
 
-   Depth is a step firmer than the soft preset: the dark shadow is
-   stronger, the light highlight is pure white (light) or lifted
-   (dark), and wells are deeper. Distances stay moderate so the
-   result reads as elegant rather than heavy.
-
-   Contrast (WCAG), measured on the base and both gradient ends:
-     foreground  >= 11:1       muted       >= 5:1
-     primary-ink >= 5.0:1      (text, icons and the focus ring)
-     primary-foreground on --primary = 5.4:1 (white would be 3.6:1, so
-     the primary button uses dark text).
+   Contrast (WCAG AA), measured on the base and both gradient ends:
+     foreground  >= 12:1       muted       >= 5:1
+     primary-ink >= 5:1        (text, icons and the focus ring)
+     white on every --gradient-button stop >= 4.5:1
    `--primary` itself is only used for fills and decoration (>= 3:1).
+   Gradient text is reserved for large headings (>= 3:1).
    ------------------------------------------------------------------ */
 
 :root {
@@ -43,74 +42,116 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   /* Cool blue-gray base */
-  --background: #e8ecf2;
-  --surface: #e8ecf2;
-  --surface-raised: #e8ecf2;
-  --surface-inset: #e8ecf2;
-  --surface-from: #f3f6fa;
-  --surface-to: #dde2ea;
+  --background: #e6ebf4;
+  --surface: #e6ebf4;
+  --surface-raised: #eef2f9;
+  --surface-inset: #e6ebf4;
+  --surface-from: #f0f3f9;
+  --surface-to: #dae1ee;
 
   /* Text */
-  --foreground: #232937;
-  --muted: #566074;
-  --border: color-mix(in srgb, var(--foreground) 12%, transparent);
+  --foreground: #172033;
+  --muted: #4f5c72;
+  --border: rgb(60 78 120 / 0.16);
 
-  /* Red identity */
-  --primary: #ff3b30;
-  --primary-hover: #ff5046;
-  --primary-active: #f0281d;
-  --primary-foreground: #140605;
-  --primary-ink: #c4170c; /* text-safe red on light surfaces */
+  /* Blue-violet identity */
+  --primary: #5558ea;
+  --primary-hover: #6a6cf0;
+  --primary-active: #4a4dde;
+  --primary-foreground: #ffffff;
+  --primary-ink: #3a49cc; /* text-safe indigo on light surfaces */
   --primary-soft: color-mix(in srgb, var(--primary) 12%, transparent);
-  --primary-muted: #f19a94; /* decorative strokes and fills */
+  --primary-muted: #a3b0ee; /* decorative strokes and fills */
 
-  --danger: #b3261e;
+  --danger: #b3261e; /* semantic error colour, not a brand accent */
 
-  /* Shadows: cool slate dark + pure white highlight */
-  --shadow-dark: rgb(150 164 188 / 0.78);
-  --shadow-dark-inset: rgb(150 164 188 / 0.9);
-  --shadow-light: rgb(255 255 255 / 1);
-  --edge-light: rgb(255 255 255 / 0.85);
-  --edge-dark: rgb(150 164 188 / 0.35);
+  /* Gradients. Brand = decoration; button = white-text safe;
+     text = large headings only. */
+  --gradient-brand: linear-gradient(
+    135deg,
+    #4285f4 0%,
+    #6366f1 50%,
+    #8b5cf6 100%
+  );
+  --gradient-brand-alt: linear-gradient(
+    135deg,
+    #56cfe1 0%,
+    #4285f4 45%,
+    #a78bfa 100%
+  );
+  --gradient-button: linear-gradient(
+    135deg,
+    #3b6fe6 0%,
+    #5457e8 50%,
+    #7a3ff0 100%
+  );
+  --gradient-text: linear-gradient(
+    135deg,
+    #2a63d6 0%,
+    #5457e8 50%,
+    #6d31df 100%
+  );
 
-  /* Primary button depth (red glow) */
-  --primary-shadow-dark: rgb(214 40 30 / 0.45);
-  --primary-shadow-light: rgb(255 255 255 / 0.9);
+  /* Ambient glow behind the top of the page (static, no blur filter) */
+  --glow-a: rgb(99 102 241 / 0.1);
+  --glow-b: rgb(66 133 244 / 0.08);
+
+  /* Shadows: blue-gray dark + white highlight */
+  --shadow-dark: rgb(138 154 184 / 0.55);
+  --shadow-dark-inset: rgb(138 154 184 / 0.7);
+  --shadow-light: rgb(255 255 255 / 0.9);
+  --edge-light: rgb(255 255 255 / 0.8);
+  --edge-dark: rgb(138 154 184 / 0.25);
+
+  /* Primary button depth */
+  --primary-shadow-dark: rgb(84 87 232 / 0.32);
+  --primary-shadow-light: rgb(255 255 255 / 0.85);
 }
 
 .dark {
   color-scheme: dark;
 
-  /* Neutral charcoal */
-  --background: #26272b;
-  --surface: #26272b;
-  --surface-raised: #26272b;
-  --surface-inset: #26272b;
-  --surface-from: #2e2f34;
-  --surface-to: #1f2023;
+  /* Tailwind zinc-900 base; zinc-800 for raised overlays */
+  --background: #18181b;
+  --surface: #18181b;
+  --surface-raised: #27272a;
+  --surface-inset: #18181b;
+  --surface-from: #1f1f23;
+  --surface-to: #131316;
 
-  --foreground: #eceef2;
-  --muted: #a0a5b0;
+  --foreground: #fafafa;
+  --muted: #a1a1aa;
+  --border: rgb(244 244 245 / 0.1);
 
-  /* Same brand key; -ink is the lighter tint for text on dark surfaces */
-  --primary: #ff3b30;
-  --primary-hover: #ff5046;
-  --primary-active: #f0281d;
-  --primary-foreground: #140605;
-  --primary-ink: #ff7a70;
-  --primary-muted: #a8342d;
+  /* Lighter indigo so fills still read on dark; -ink is for text */
+  --primary: #818cf8;
+  --primary-hover: #939cfa;
+  --primary-active: #6f7bf2;
+  --primary-foreground: #ffffff;
+  --primary-ink: #a5b4fc;
+  --primary-muted: #3b4a8f;
 
   --danger: #ff8a80;
 
-  /* Deeper black shadow, lifted gray highlight */
-  --shadow-dark: rgb(8 9 11 / 0.9);
-  --shadow-dark-inset: rgb(8 9 11 / 0.95);
-  --shadow-light: rgb(84 87 96 / 0.55);
-  --edge-light: rgb(130 134 144 / 0.22);
-  --edge-dark: rgb(6 7 9 / 0.6);
+  --gradient-text: linear-gradient(
+    135deg,
+    #8ab4f8 0%,
+    #8b9cff 50%,
+    #a78bfa 100%
+  );
 
-  --primary-shadow-dark: rgb(6 6 8 / 0.7);
-  --primary-shadow-light: rgb(255 90 80 / 0.18);
+  --glow-a: rgb(99 102 241 / 0.12);
+  --glow-b: rgb(66 133 244 / 0.08);
+
+  /* Deep black shadow, faint white highlight */
+  --shadow-dark: rgb(0 0 0 / 0.55);
+  --shadow-dark-inset: rgb(0 0 0 / 0.65);
+  --shadow-light: rgb(255 255 255 / 0.06);
+  --edge-light: rgb(255 255 255 / 0.07);
+  --edge-dark: rgb(0 0 0 / 0.5);
+
+  --primary-shadow-dark: rgb(0 0 0 / 0.55);
+  --primary-shadow-light: rgb(129 140 248 / 0.1);
 }
 
 /* Expose the tokens as Tailwind utilities (bg-surface, text-primary-ink...) */
@@ -169,6 +210,10 @@
 
   body {
     background-color: var(--background);
+    background-image:
+      radial-gradient(48rem 32rem at 88% -8%, var(--glow-a), transparent 70%),
+      radial-gradient(40rem 28rem at -8% 6%, var(--glow-b), transparent 70%);
+    background-repeat: no-repeat;
     color: var(--foreground);
     overflow-x: clip;
   }
@@ -180,8 +225,8 @@
   }
 
   ::selection {
-    background-color: var(--primary);
-    color: var(--primary-foreground);
+    background-color: color-mix(in srgb, var(--primary) 30%, transparent);
+    color: inherit;
   }
 
   /* Visible keyboard focus everywhere, >= 3:1 against every surface. */
@@ -197,7 +242,7 @@
     background: var(--background);
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--shadow-dark);
+    background: color-mix(in srgb, var(--muted) 45%, transparent);
     border-radius: 999px;
   }
 }
@@ -211,9 +256,9 @@
    transition cannot do between outer and inset shadows.
 
    Raised = 1px edge highlights + a dark/light pair at --d / --b.
-   Wells  = the same pair, inset, at 0.55x the distance and blur.
-   Preset is 12px / 24px: firm enough to read clearly, restrained
-   enough to stay professional.
+   Wells  = the same pair, inset, at 0.6x the distance and blur.
+   Preset is 10px / 24px: soft enough to stay professional, firm enough
+   to read clearly.
 
    Modifiers
      depth   .neu-sm | .neu-md (preset) | .neu-lg
@@ -226,7 +271,7 @@
 
 @layer components {
   .neu {
-    --d: 12px;
+    --d: 10px;
     --b: 24px;
     --raised: 1;
     --inset: 0;
@@ -268,28 +313,28 @@
         calc(var(--b) * var(--elev)) var(--shadow-light);
   }
 
-  /* Inset layer: 0.55x the raised distance and blur. */
+  /* Inset layer: 0.6x the raised distance and blur. */
   .neu::after {
     opacity: var(--inset);
     box-shadow:
-      inset calc(var(--d) * 0.55 * var(--elev))
-        calc(var(--d) * 0.55 * var(--elev)) calc(var(--b) * 0.55 * var(--elev))
+      inset calc(var(--d) * 0.6 * var(--elev))
+        calc(var(--d) * 0.6 * var(--elev)) calc(var(--b) * 0.6 * var(--elev))
         var(--shadow-dark-inset),
-      inset calc(var(--d) * -0.55 * var(--elev))
-        calc(var(--d) * -0.55 * var(--elev)) calc(var(--b) * 0.55 * var(--elev))
+      inset calc(var(--d) * -0.6 * var(--elev))
+        calc(var(--d) * -0.6 * var(--elev)) calc(var(--b) * 0.6 * var(--elev))
         var(--shadow-light);
   }
 
   .neu-sm {
     --d: 5px;
-    --b: 10px;
+    --b: 12px;
   }
   .neu-md {
-    --d: 12px;
+    --d: 10px;
     --b: 24px;
   }
   .neu-lg {
-    --d: 18px;
+    --d: 16px;
     --b: 36px;
   }
 
@@ -297,6 +342,7 @@
   .neu-well {
     --raised: 0;
     --inset: 1;
+    background-color: var(--surface-inset);
     background-image: none;
   }
 
@@ -321,39 +367,71 @@
     transform: translateY(0);
   }
 
-  /* Primary action: a solid red key with tactile neumorphic depth. */
+  /* Primary action: a blue-violet gradient key with soft neumorphic depth.
+     Hover slides the oversized gradient; only background-position,
+     transform and box-shadow change, so the layout never moves. */
   .btn-primary {
     color: var(--primary-foreground);
-    background-color: var(--primary);
-    border: 1px solid color-mix(in srgb, var(--primary) 70%, white);
+    background-color: #5457e8;
+    background-image: var(--gradient-button);
+    background-size: 160% 100%;
+    background-position: 0% 50%;
+    border: 1px solid rgb(255 255 255 / 0.22);
     box-shadow:
-      6px 6px 12px var(--primary-shadow-dark),
-      -6px -6px 12px var(--primary-shadow-light),
-      inset 1px 1px 2px rgb(255 255 255 / 0.32),
+      5px 5px 12px var(--primary-shadow-dark),
+      -5px -5px 12px var(--primary-shadow-light),
+      inset 1px 1px 2px rgb(255 255 255 / 0.3),
       inset -2px -2px 4px rgb(0 0 0 / 0.14);
     transition:
-      background-color 0.3s var(--ease),
-      box-shadow 0.45s var(--ease),
+      background-position 0.45s var(--ease),
+      box-shadow 0.35s var(--ease),
       transform 0.25s var(--ease);
   }
   @media (hover: hover) {
     .btn-primary:hover:not(:disabled) {
-      background-color: var(--primary-hover);
+      background-position: 100% 50%;
       transform: translateY(-2px);
       box-shadow:
-        8px 8px 16px var(--primary-shadow-dark),
-        -8px -8px 16px var(--primary-shadow-light),
-        inset 1px 1px 2px rgb(255 255 255 / 0.36),
+        7px 7px 16px var(--primary-shadow-dark),
+        -7px -7px 16px var(--primary-shadow-light),
+        inset 1px 1px 2px rgb(255 255 255 / 0.34),
         inset -2px -2px 4px rgb(0 0 0 / 0.14);
     }
   }
   .btn-primary:active:not(:disabled) {
-    background-color: var(--primary-active);
+    background-position: 100% 50%;
     transform: translateY(0);
     box-shadow:
       inset 4px 4px 8px rgb(0 0 0 / 0.28),
-      inset -3px -3px 7px rgb(255 255 255 / 0.2);
+      inset -3px -3px 7px rgb(255 255 255 / 0.18);
   }
+}
+
+/* ------------------------------------------------------------------
+   Gradient helpers (used selectively, never on body copy)
+   ------------------------------------------------------------------ */
+
+/* Gradient-filled text for large headings. box-decoration-break keeps the
+   gradient intact when the phrase wraps; forced-colors falls back to the
+   system text colour so it never disappears. */
+@utility text-gradient {
+  background-image: var(--gradient-text);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+
+  @media (forced-colors: active) {
+    background-image: none;
+    color: CanvasText;
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+@utility bg-gradient-brand {
+  background-image: var(--gradient-brand);
 }
 
 /* ------------------------------------------------------------------

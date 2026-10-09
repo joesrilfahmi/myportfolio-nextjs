@@ -22,7 +22,10 @@ export function ProjectLinks({
 
   return (
     <div
-      className={cn("flex flex-nowrap items-center gap-3 sm:gap-4", className)}
+      className={cn(
+        "flex flex-wrap items-center gap-3 min-[375px]:flex-nowrap sm:gap-4",
+        className,
+      )}
     >
       {href && (
         <Button

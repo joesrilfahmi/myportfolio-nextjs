@@ -4,6 +4,7 @@ import { About } from "@/components/sections/About";
 import { Contact } from "@/components/sections/Contact";
 import { Hero } from "@/components/sections/Hero";
 import { HeroCard } from "@/components/sections/HeroCard";
+import { Journey } from "@/components/sections/Journey";
 import { Projects } from "@/components/sections/Projects";
 import { Skills } from "@/components/sections/Skills";
 
@@ -18,6 +19,7 @@ export default function Home() {
         <main id="main" tabIndex={-1} className="min-w-0 outline-none">
           <Hero />
           <About />
+          <Journey />
           <Skills />
           <Projects />
           <Contact />
