@@ -3,7 +3,7 @@ import { cn } from "@/lib/cn";
 
 const spacings = {
   default: "py-20 md:py-28",
-  hero: "pt-36 pb-20 md:pt-40 md:pb-24",
+  hero: "py-12 pb-32 md:py-8",
 } as const;
 
 interface SectionProps {
@@ -27,7 +27,7 @@ export function Section({
     <section
       id={id}
       aria-labelledby={titleId}
-      className={cn("mx-auto max-w-6xl px-6", spacings[spacing], className)}
+      className={cn("mx-auto max-w-6xl px-4", spacings[spacing], className)}
     >
       {children}
     </section>

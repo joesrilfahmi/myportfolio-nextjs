@@ -7,7 +7,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mx-auto max-w-6xl px-6 pt-6 pb-10">
+    <footer className="mx-auto max-w-6xl px-6 pt-6 pb-10 md:mx-0 md:max-w-none md:px-0">
       <Reveal>
         <Card
           depth="sm"

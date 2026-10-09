@@ -1,177 +1,89 @@
 "use client";
 
-import { useEffect, useState, type MouseEvent } from "react";
-import { Menu, X } from "lucide-react";
-import { AnimatePresence, m } from "motion/react";
-import { navLinks, personalInfo } from "@/lib/data/shared";
-import { cn } from "@/lib/cn";
-import { surfaceVariants, transitions } from "@/lib/motion";
+import type { MouseEvent } from "react";
+import {
+  FolderKanban,
+  House,
+  Mail,
+  UserRound,
+  type LucideIcon,
+} from "lucide-react";
+import { m } from "motion/react";
+import { navLinks } from "@/lib/data/shared";
+import { transitions } from "@/lib/motion";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import { Card } from "../ui/Card";
-import { IconButton } from "../ui/Button";
 import { ThemeToggle } from "../shared/ThemeToggle";
 
 const sectionHrefs = navLinks.map((link) => link.href);
 
-const initials = personalInfo.name
-  .trim()
-  .split(/\s+/)
-  .map((word) => word.charAt(0))
-  .join("");
-
-/** Delay before scrolling so the mobile menu can finish closing first. */
-const MENU_CLOSE_DELAY = 250;
-
-const linkLayouts = {
-  desktop: {
-    list: "flex items-center gap-1",
-    link: "rounded-full px-4 py-2",
-    radius: 9999,
-  },
-  mobile: {
-    list: "flex flex-col gap-1",
-    link: "rounded-2xl px-4 py-3",
-    radius: 16,
-  },
-} as const;
-
-interface NavLinksProps {
-  activeHref: string;
-  onNavigate: (event: MouseEvent<HTMLAnchorElement>, href: string) => void;
-  variant: keyof typeof linkLayouts;
-}
-
-/** The link list, rendered once per layout (desktop bar / mobile sheet). */
-function NavLinks({ activeHref, onNavigate, variant }: NavLinksProps) {
-  const layout = linkLayouts[variant];
-
-  return (
-    <ul className={layout.list}>
-      {navLinks.map(({ label, href }) => {
-        const isActive = activeHref === href;
-
-        return (
-          <li key={href} className="relative">
-            <a
-              href={href}
-              onClick={(event) => onNavigate(event, href)}
-              aria-current={isActive ? "location" : undefined}
-              className={cn(
-                "relative z-10 block text-sm font-medium transition-colors duration-300 ease-neu",
-                layout.link,
-                isActive
-                  ? "text-primary-ink"
-                  : "text-muted hover:text-foreground",
-              )}
-            >
-              {label}
-            </a>
-
-            {/* One shared indicator that slides between links. */}
-            {isActive && (
-              <m.span
-                layoutId={`nav-active-${variant}`}
-                transition={transitions.spring}
-                style={{ borderRadius: layout.radius }}
-                aria-hidden="true"
-                className="neu neu-sm neu-well absolute inset-0"
-              />
-            )}
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
+const navIcons = {
+  "#top": House,
+  "#about": UserRound,
+  "#projects": FolderKanban,
+  "#contact": Mail,
+} satisfies Record<(typeof navLinks)[number]["href"], LucideIcon>;
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
   const { activeHref, navigate } = useScrollSpy(sectionHrefs);
 
-  const handleNavigate =
-    (closeMenu: boolean) =>
-    (event: MouseEvent<HTMLAnchorElement>, href: string) => {
-      event.preventDefault();
-      if (closeMenu) setIsOpen(false);
-      navigate(href, closeMenu ? MENU_CLOSE_DELAY : 0);
-    };
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setIsOpen(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [isOpen]);
+  const handleNavigate = (
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    event.preventDefault();
+    navigate(href);
+  };
 
   return (
-    <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-4">
-      <div className="w-full max-w-3xl">
-        <Card
-          radius="full"
-          className="flex items-center justify-between gap-2 px-3 py-2.5"
-        >
-          <IconButton
-            href="#top"
-            label="Back to top"
-            accent
-            onClick={() => setIsOpen(false)}
-            className="text-sm font-bold tracking-tight"
-          >
-            {initials}
-          </IconButton>
+    <header className="fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 md:inset-x-auto md:top-1/2 md:right-[max(1rem,calc((100vw-1920px)/2+1rem))] md:bottom-auto md:-translate-y-1/2">
+      <Card
+        radius="full"
+        depth="md"
+        className="flex items-center gap-1.5 px-2.5 py-2.5 md:flex-col"
+      >
+        <nav aria-label="Primary">
+          <ul className="flex items-center gap-1 md:flex-col">
+            {navLinks.map(({ label, href }) => {
+              const Icon = navIcons[href];
+              const isActive = activeHref === href;
 
-          <nav aria-label="Primary" className="hidden md:block">
-            <NavLinks
-              variant="desktop"
-              activeHref={activeHref}
-              onNavigate={handleNavigate(false)}
-            />
-          </nav>
+              return (
+                <li key={href} className="relative">
+                  <a
+                    href={href}
+                    onClick={(event) => handleNavigate(event, href)}
+                    aria-label={label}
+                    aria-current={isActive ? "location" : undefined}
+                    title={label}
+                    className={`relative z-10 inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-300 ease-neu ${
+                      isActive
+                        ? "text-primary-ink"
+                        : "text-muted hover:text-primary-ink"
+                    }`}
+                  >
+                    <Icon size={19} strokeWidth={1.75} aria-hidden="true" />
+                  </a>
+                  {isActive && (
+                    <m.span
+                      layoutId="navbar-active-indicator"
+                      transition={transitions.spring}
+                      aria-hidden="true"
+                      className="neu neu-sm neu-well absolute inset-0 rounded-full"
+                    />
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
 
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <IconButton
-              label={isOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isOpen}
-              aria-controls="mobile-menu"
-              active={isOpen}
-              onClick={() => setIsOpen((open) => !open)}
-              className="md:hidden"
-            >
-              {isOpen ? (
-                <X size={18} aria-hidden="true" />
-              ) : (
-                <Menu size={18} aria-hidden="true" />
-              )}
-            </IconButton>
-          </div>
-        </Card>
-
-        <AnimatePresence>
-          {isOpen && (
-            <m.nav
-              id="mobile-menu"
-              aria-label="Mobile"
-              variants={surfaceVariants.dropdown}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              transition={transitions.fast}
-              className="origin-top md:hidden"
-            >
-              <Card radius="3xl" className="mt-3 p-3">
-                <NavLinks
-                  variant="mobile"
-                  activeHref={activeHref}
-                  onNavigate={handleNavigate(true)}
-                />
-              </Card>
-            </m.nav>
-          )}
-        </AnimatePresence>
-      </div>
+        <span
+          aria-hidden="true"
+          className="mx-1 h-7 w-px bg-border md:mx-0 md:my-1 md:h-px md:w-7"
+        />
+        <ThemeToggle />
+      </Card>
     </header>
   );
 }
