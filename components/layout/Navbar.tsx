@@ -3,6 +3,7 @@
 import type { MouseEvent } from "react";
 import {
   FolderKanban,
+  Code2,
   House,
   Mail,
   UserRound,
@@ -20,6 +21,7 @@ const sectionHrefs = navLinks.map((link) => link.href);
 const navIcons = {
   "#top": House,
   "#about": UserRound,
+  "#skills": Code2,
   "#projects": FolderKanban,
   "#contact": Mail,
 } satisfies Record<(typeof navLinks)[number]["href"], LucideIcon>;
@@ -36,7 +38,7 @@ export function Navbar() {
   };
 
   return (
-    <header className="fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 md:inset-x-auto md:top-1/2 md:right-[max(1rem,calc((100vw-1920px)/2+1rem))] md:bottom-auto md:-translate-y-1/2">
+    <header className="fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 md:inset-x-auto md:top-1/2 md:right-[max(2rem,calc((100vw-1920px)/2+2rem))] md:bottom-auto md:-translate-y-1/2 lg:right-[max(2.5rem,calc((100vw-1920px)/2+2.5rem))]">
       <Card
         radius="full"
         depth="md"

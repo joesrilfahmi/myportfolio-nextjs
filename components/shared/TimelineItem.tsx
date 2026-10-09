@@ -19,7 +19,6 @@ export function TimelineItem({ entry, index, isLast }: TimelineItemProps) {
 
   return (
     <li className="relative pb-12 pl-14 last:pb-0 md:grid md:grid-cols-[1fr_auto_1fr] md:gap-8 md:pl-0">
-      {/* rail: from below the marker to the next row */}
       {!isLast && (
         <span
           aria-hidden="true"
@@ -27,7 +26,6 @@ export function TimelineItem({ entry, index, isLast }: TimelineItemProps) {
         />
       )}
 
-      {/* marker */}
       <Card
         tone="inset"
         depth="sm"

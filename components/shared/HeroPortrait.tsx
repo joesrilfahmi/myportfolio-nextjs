@@ -7,7 +7,7 @@ import { Card } from "../ui/Card";
 /** Profile photo in a neumorphic frame. */
 export function HeroPortrait() {
   return (
-    <div className="relative aspect-square w-[min(16rem,calc(100vw-5rem))] sm:w-72 md:w-56 lg:w-64">
+    <div className="relative aspect-square w-[min(11.5rem,calc(100vw-8rem))] sm:w-72 md:w-56 lg:w-64">
       <Card radius="full" depth="lg" className="h-full w-full p-3.5">
         <Card
           tone="inset"

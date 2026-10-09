@@ -1,5 +1,4 @@
 import { aboutContent, aboutHighlights } from "@/lib/data/about";
-import { skills, skillsContent } from "@/lib/data/skills";
 import { stagger } from "@/lib/motion";
 import { Reveal } from "../motion/Reveal";
 import { GitHubContributions } from "../shared/GitHubContributions";
@@ -46,50 +45,6 @@ export async function About() {
                       </div>
                     </Card>
                   </Reveal>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="mt-14 border-t border-border pt-10">
-            <div className="mb-7">
-              <h3 className="text-xl font-semibold text-foreground">
-                {skillsContent.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
-                {skillsContent.description}
-              </p>
-            </div>
-
-            <ul
-              aria-label="Technologies"
-              className="flex flex-wrap justify-center gap-5 sm:justify-start sm:gap-7"
-            >
-              {skills.map(({ name, icon }) => (
-                <li key={name}>
-                  <Card
-                    as="div"
-                    role="img"
-                    aria-label={name}
-                    depth="sm"
-                    radius="full"
-                    interactive
-                    className="flex size-16 items-center justify-center p-4 sm:size-[4.5rem]"
-                  >
-                    <svg
-                      aria-hidden="true"
-                      viewBox="0 0 24 24"
-                      className="size-full"
-                      style={{
-                        fill:
-                          name === "Next.js"
-                            ? "var(--foreground)"
-                            : `#${icon.hex}`,
-                      }}
-                    >
-                      <path d={icon.path} />
-                    </svg>
-                  </Card>
                 </li>
               ))}
             </ul>
