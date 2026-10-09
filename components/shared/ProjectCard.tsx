@@ -12,7 +12,7 @@ export function ProjectCard({ project }: { project: Project }) {
       as="article"
       interactive
       radius="4xl"
-      className="flex h-full flex-col p-5 sm:p-6"
+      className="flex h-full min-w-0 flex-col p-4 min-[375px]:p-5 sm:p-6"
     >
       <ProjectThumbnail
         kind={project.kind}
@@ -22,7 +22,7 @@ export function ProjectCard({ project }: { project: Project }) {
 
       <ProjectMeta project={project} className="mt-6" />
 
-      <h3 className="mt-4 font-display text-xl font-bold tracking-tight text-foreground">
+      <h3 className="mt-4 font-display text-lg font-bold tracking-tight text-foreground sm:text-xl">
         {project.title}
       </h3>
 

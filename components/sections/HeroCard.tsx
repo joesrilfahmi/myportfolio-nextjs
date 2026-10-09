@@ -10,7 +10,7 @@ export function HeroCard() {
     <Card
       radius="4xl"
       depth="lg"
-      className="mx-auto flex min-h-[34rem] w-full max-w-sm flex-col items-center justify-center p-8 text-center lg:min-h-0 lg:max-w-none"
+      className="mx-auto flex min-h-[min(38rem,calc(100svh-7rem))] w-full max-w-sm flex-col items-center justify-center p-8 text-center lg:min-h-0 lg:max-w-none"
     >
       <HeroPortrait />
 

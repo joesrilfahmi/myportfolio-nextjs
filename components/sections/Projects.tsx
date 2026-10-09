@@ -66,7 +66,7 @@ export function Projects() {
           </Reveal>
 
           {others.length > 0 && (
-            <div className="grid gap-6 sm:grid-cols-2 md:gap-8 lg:grid-cols-3">
+            <div className="grid min-w-0 gap-6 sm:grid-cols-2 md:gap-8 2xl:grid-cols-3">
               {others.map((project, index) => (
                 <Reveal
                   key={project.title}

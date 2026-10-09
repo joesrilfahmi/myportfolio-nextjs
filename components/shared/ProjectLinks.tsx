@@ -22,14 +22,14 @@ export function ProjectLinks({
 
   return (
     <div
-      className={cn("flex flex-nowrap items-center gap-2 sm:gap-3", className)}
+      className={cn("flex flex-nowrap items-center gap-3 sm:gap-4", className)}
     >
       {href && (
         <Button
           href={href}
           size={size}
           variant="primary"
-          className="px-3 whitespace-nowrap sm:px-5"
+          className="px-2.5 text-xs whitespace-nowrap min-[375px]:px-3 sm:px-5 sm:text-sm"
           icon={<ArrowUpRight size={15} strokeWidth={2} />}
         >
           View Project
@@ -41,7 +41,7 @@ export function ProjectLinks({
           size={size}
           variant={href ? "raised" : "primary"}
           aria-label={`${project.title} source code on GitHub`}
-          className="px-3 whitespace-nowrap sm:px-5"
+          className="px-2.5 text-xs whitespace-nowrap min-[375px]:px-3 sm:px-5 sm:text-sm"
           icon={<GithubIcon size={16} strokeWidth={1.75} aria-hidden="true" />}
         >
           Source Code
