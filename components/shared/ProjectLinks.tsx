@@ -21,12 +21,15 @@ export function ProjectLinks({
   if (!href && !githubHref) return null;
 
   return (
-    <div className={cn("flex flex-wrap items-center gap-3", className)}>
+    <div
+      className={cn("flex flex-nowrap items-center gap-2 sm:gap-3", className)}
+    >
       {href && (
         <Button
           href={href}
           size={size}
           variant="primary"
+          className="px-3 whitespace-nowrap sm:px-5"
           icon={<ArrowUpRight size={15} strokeWidth={2} />}
         >
           View Project
@@ -38,6 +41,7 @@ export function ProjectLinks({
           size={size}
           variant={href ? "raised" : "primary"}
           aria-label={`${project.title} source code on GitHub`}
+          className="px-3 whitespace-nowrap sm:px-5"
           icon={<GithubIcon size={16} strokeWidth={1.75} aria-hidden="true" />}
         >
           Source Code

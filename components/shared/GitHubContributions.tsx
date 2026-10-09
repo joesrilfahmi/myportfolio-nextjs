@@ -60,13 +60,13 @@ export async function GitHubContributions() {
         </div>
       </div>
 
-      <div className="mt-6 overflow-x-auto pb-2">
+      <div className="mt-6">
         <div
-          className="w-max"
+          className="w-full"
           role="img"
           aria-label="Daily contribution activity over the past year"
         >
-          <div className="mb-2 flex gap-1" aria-hidden="true">
+          <div className="relative mb-2 h-3" aria-hidden="true">
             {contributions.weeks.map((week, index) => {
               const firstOfMonth = week.contributionDays.find((day) =>
                 day.date.endsWith("-01"),
@@ -78,25 +78,36 @@ export async function GitHubContributions() {
                     ? new Date(`${firstOfMonth.date}T00:00:00`)
                     : null;
 
-              return (
+              return monthDate ? (
                 <span
                   key={`month-${index}`}
-                  className="w-3 text-[10px] leading-none text-muted"
+                  className="absolute text-[8px] leading-none text-muted sm:text-[10px]"
+                  style={{
+                    left: `${(index / Math.max(contributions.weeks.length - 1, 1)) * 100}%`,
+                  }}
                 >
-                  {monthDate ? monthFormatter.format(monthDate) : ""}
+                  {monthFormatter.format(monthDate)}
                 </span>
-              );
+              ) : null;
             })}
           </div>
 
-          <div className="flex gap-1">
+          <div
+            className="grid w-full gap-x-px sm:gap-x-1"
+            style={{
+              gridTemplateColumns: `repeat(${contributions.weeks.length}, minmax(0, 1fr))`,
+            }}
+          >
             {contributions.weeks.map((week, weekIndex) => (
-              <div key={`week-${weekIndex}`} className="flex flex-col gap-1">
+              <div
+                key={`week-${weekIndex}`}
+                className="flex min-w-0 flex-col gap-px sm:gap-1"
+              >
                 {week.contributionDays.map((day) => (
                   <span
                     key={day.date}
                     title={`${day.contributionCount} contributions on ${day.date}`}
-                    className={`size-3 rounded-sm ${contributionColors[getContributionColor(day.contributionCount)]}`}
+                    className={`aspect-square w-full max-w-3 rounded-[1px] sm:rounded-sm ${contributionColors[getContributionColor(day.contributionCount)]}`}
                   />
                 ))}
               </div>
